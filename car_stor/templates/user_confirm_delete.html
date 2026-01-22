@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-heading">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="page-title">
+                    <h2>Delete User</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-container col1-layout wow bounceInUp animated animated" style="visibility: visible;">
+    <div class="main">
+        <div class="col-main">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <div class="account-login">
+                            <div class="col-1 new-users">
+                                <div class="content">
+                                    <p>Are you sure you want to delete the user "<strong>{{ user_obj.username
+                                            }}</strong>" ({{ user_obj.email }})?</p>
+                                    <p style="color: red;"><strong>Warning:</strong> This will delete all cars, orders,
+                                        and data associated with this user. This action cannot be undone.</p>
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        <div class="buttons-set">
+                                            <button type="submit" class="button"><span style="background: red;">Confirm
+                                                    Delete</span></button>
+                                            <a href="{% url 'admin_dashboard' %}" class="button"
+                                                style="background: #ccc; padding: 7px 15px; color: #333;">Cancel</a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

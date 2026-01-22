@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-heading">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="page-title">
+          <h2>Login or Create an Account</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main-container col1-layout wow bounceInUp animated animated" style="visibility: visible;">
+  <div class="main">
+    <div class="account-login container">
+      <form action="{% url 'login' %}" method="post" id="login-form">
+        {% csrf_token %}
+        <fieldset class="col2-set">
+          <div class="col-1 new-users">
+            <strong>New Customers</strong>
+            <div class="content">
+              <p>By creating an account with our store, you will be able to move through the checkout process faster,
+                store multiple shipping addresses, view and track your orders in your account and more.</p>
+              <div class="buttons-set">
+                <a href="{% url 'register' %}" class="button create-account"><span><span>Create an
+                      Account</span></span></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-2 registered-users">
+            <strong>Registered Customers</strong>
+            <div class="content">
+              <p>If you have an account with us, please log in.</p>
+              {% if form.errors %}
+              <p class="error-msg">Your username and password didn't match. Please try again.</p>
+              {% endif %}
+              <ul class="form-list">
+                {{ form.as_ul }}
+              </ul>
+              <div class="buttons-set">
+                <button type="submit" class="button login" title="Login" name="send"
+                  id="send2"><span>Login</span></button>
+                <a href="#" class="forgot-word">Forgot Your Password?</a>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

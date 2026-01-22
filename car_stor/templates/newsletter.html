@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Newsletter - Harrier Car Store{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="page-title">
+          <h2>Newsletter Subscription</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main-container col1-layout">
+  <div class="main container">
+    <div class="account-login">
+      <div class="page-title">
+        <h2>Subscribe to Our Newsletter</h2>
+      </div>
+      <form action="#" method="post" id="newsletter-form">
+        {% csrf_token %}
+        <div class="col2-set">
+          <div class="col-1">
+            <p>Stay updated with our latest offers and car arrivals.</p>
+            <div class="input-box">
+              <label for="newsletter-email">Email Address<em class="required">*</em></label>
+              <br>
+              <input type="text" name="email" id="newsletter-email" class="input-text required-entry validate-email"
+                placeholder="Enter your email address">
+            </div>
+            <div class="buttons-set">
+              <button type="submit" title="Subscribe" class="button subscribe"><span>Subscribe</span></button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

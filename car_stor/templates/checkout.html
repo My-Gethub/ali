@@ -1,0 +1,466 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Checkout - Harrier Car Store{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="page-title">
+          <h2>Checkout</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main-container col2-right-layout">
+  <div class="main container">
+    <div class="row">
+      <section class="col-main col-sm-9 wow bounceInUp animated">
+        <ol class="one-page-checkout" id="checkoutSteps">
+          <li id="opc-billing" class="section allow active">
+            <div class="step-title"> <span class="number">1</span>
+              <h3 class="one_page_heading"> Billing Information</h3>
+            </div>
+            <div id="checkout-step-billing" class="step a-item">
+              <form id="co-billing-form" action="#">
+                <fieldset class="group-select">
+                  <ul class="">
+                    <li class="wide">
+                      <label for="billing-address-select">Select a billing address from your address book or enter a new address.</label><br>
+                      <div class="input-box">
+                        <select name="billing_address_id" id="billing-address-select" class="address-select" onchange="toggleBillingForm(this.value)">
+                          {% if request.user.profile.address %}
+                          <option value="1" selected="selected">{{ request.user.get_full_name|default:request.user.username }}, {{ request.user.profile.address }}, {{ request.user.profile.city }}</option>
+                          {% endif %}
+                          <option value="" {% if not request.user.profile.address %}selected="selected"{% endif %}>New Address</option>
+                        </select>
+                      </div>
+                    </li>
+                    <li id="billing-new-address-form" {% if request.user.profile.address %}style="display:none;"{% endif %}>
+                      <fieldset>
+                        <input type="hidden" name="billing[address_id]" value="" id="billing:address_id">
+                        <ul>
+                          <li class="fields">
+                            <div class="customer-name">
+                              <div class="input-box name-firstname">
+                                <label for="billing:firstname">First Name<span class="required">*</span></label>
+                                <div class="input-box1">
+                                  <input type="text" id="billing:firstname" name="billing[firstname]" value="{{ request.user.first_name }}" title="First Name" maxlength="255" class="input-text required-entry">
+                                </div>
+                              </div>
+                              <div class="input-box name-lastname">
+                                <label for="billing:lastname">Last Name<span class="required">*</span></label>
+                                <div class="input-box1">
+                                  <input type="text" id="billing:lastname" name="billing[lastname]" value="{{ request.user.last_name }}" title="Last Name" maxlength="255" class="input-text required-entry">
+                                </div>
+                              </div>
+                            </div>
+                          </li>
+                          <li class="fields">
+                            <div class="input-box">
+                              <label for="billing:company">Company</label>
+                              <input type="text" id="billing:company" name="billing[company]" value="" title="Company" class="input-text ">
+                            </div>
+                          </li>
+                          <li class="wide">
+                            <label for="billing:street1">Address<em class="required">*</em></label><br>
+                            <input type="text" title="Street Address" name="billing[street]" id="billing:street1" value="{{ request.user.profile.address|default:'' }}" class="input-text required-entry">
+                          </li>
+                          <li class="wide">
+                            <input type="text" title="Street Address 2" name="billing[street2]" id="billing:street2" value="" class="input-text ">
+                          </li>
+                          <li class="fields">
+                            <div class="input-box">
+                              <label for="billing:city">City<em class="required">*</em></label>
+                              <input type="text" title="City" name="billing[city]" value="{{ request.user.profile.city|default:'' }}" class="input-text required-entry" id="billing:city">
+                            </div>
+                            <div class="field">
+                              <label for="billing:region_id">State/Province</label><br>
+                              <div class="input-box">
+                                <select id="billing:region_id" name="billing[region_id]" title="State/Province" class="validate-select required-entry" defaultvalue="">
+                                  <option value="">Please select region, state or province</option>
+                                  <option value="1" title="Alabama">Alabama</option>
+                                  <option value="2" title="Alaska">Alaska</option>
+                                  <option value="3" title="New York">New York</option>
+                                  <option value="4" title="California">California</option>
+                                </select>
+                                <input type="text" id="billing:region" name="billing[region]" value="" title="State/Province" class="input-text required-entry" style="display: none;">
+                              </div>
+                            </div>
+                          </li>
+                          <li class="fields">
+                            <div class="input-box">
+                              <label for="billing:postcode">Zip/Postal Code<em class="required">*</em></label>
+                              <input type="text" title="Zip/Postal Code" name="billing[postcode]" id="billing:postcode" value="" class="input-text validate-zip-international required-entry">
+                            </div>
+                            <div class="input-box">
+                              <label for="billing:country_id">Country<em class="required">*</em></label>
+                              <select name="billing[country_id]" id="billing:country_id" class="validate-select" title="Country">
+                                <option value=""> </option>
+                                <option value="US" selected="selected">United States</option>
+                                <option value="UK">United Kingdom</option>
+                                <option value="CA">Canada</option>
+                              </select>
+                            </div>
+                          </li>
+                          <li class="fields">
+                            <div class="input-box">
+                              <label for="billing:telephone">Telephone<em class="required">*</em></label>
+                              <input type="text" name="billing[telephone]" value="{{ request.user.profile.phone|default:'' }}" title="Telephone" class="input-text required-entry" id="billing:telephone">
+                            </div>
+                            <div class="input-box">
+                              <label for="billing:fax">Fax</label>
+                              <input type="text" name="billing[fax]" value="" title="Fax" class="input-text " id="billing:fax">
+                            </div>
+                          </li>
+                          <li class="">
+                            <input type="checkbox" name="billing[save_in_address_book]" value="1" title="Save in address book" id="billing:save_in_address_book" class="checkbox"><label for="billing:save_in_address_book">Save in address book</label>
+                          </li>
+                        </ul>
+                      </fieldset>
+                    </li>
+                    <li class="">
+                      <input type="radio" name="billing[use_for_shipping]" id="billing:use_for_shipping_yes" value="1" checked="checked" title="Ship to this address" onclick="toggleShippingMode(true)" class="radio"><label for="billing:use_for_shipping_yes">Ship to this address</label>
+                      <input type="radio" name="billing[use_for_shipping]" id="billing:use_for_shipping_no" value="0" title="Ship to different address" onclick="toggleShippingMode(false)" class="radio"><label for="billing:use_for_shipping_no">Ship to different address</label>
+                    </li>
+                  </ul>
+                  <div class="buttons-set" id="billing-buttons-container">
+                    <p class="required">* Required Fields</p>
+                    <button type="button" title="Continue" class="button continue" onclick="handleBillingContinue()"><span>Continue</span></button>
+                    <span class="please-wait" id="billing-please-wait" style="display:none;">
+                      <img src="{% static 'images/opc-ajax-loader.gif' %}" alt="Loading next step..." class="v-middle"> Loading next step... </span>
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+          </li>
+
+          <li id="opc-shipping" class="section">
+            <div class="step-title"> <span class="number">2</span>
+              <h3 class="one_page_heading">Shipping Information</h3>
+            </div>
+            <div id="checkout-step-shipping" class="step a-item" style="display: none;">
+              <form id="co-shipping-form" action="#">
+                <fieldset>
+                  <ul class="form-list">
+                    <li class="control">
+                      <input type="checkbox" name="shipping_same_as_billing" id="shipping:same_as_billing" value="1" checked="checked" class="checkbox" onclick="toggleShippingForm(this)">
+                      <label for="shipping:same_as_billing">Ship to the same address</label>
+                    </li>
+                  </ul>
+                  <div id="shipping-new-address-form" style="display: none;">
+                    <ul class="form-list">
+                      <li class="fields">
+                        <div class="input-box">
+                          <label for="shipping:firstname">First Name <span class="required">*</span></label>
+                          <input type="text" id="shipping:firstname" name="shipping[firstname]" value="{{ request.user.first_name }}" class="input-text required-entry">
+                        </div>
+                        <div class="input-box">
+                          <label for="shipping:lastname">Last Name <span class="required">*</span></label>
+                          <input type="text" id="shipping:lastname" name="shipping[lastname]" value="{{ request.user.last_name }}" class="input-text required-entry">
+                        </div>
+                      </li>
+                      <li class="wide">
+                        <label for="shipping:street1">Address <em class="required">*</em></label>
+                        <input type="text" title="Street Address" name="shipping[street]" id="shipping:street1" value="" class="input-text required-entry">
+                      </li>
+                      <li class="fields">
+                        <div class="input-box">
+                          <label for="shipping:city">City <em class="required">*</em></label>
+                          <input type="text" title="City" name="shipping[city]" value="" class="input-text required-entry" id="shipping:city">
+                        </div>
+                        <div class="input-box">
+                          <label for="shipping:telephone">Telephone <em class="required">*</em></label>
+                          <input type="text" name="shipping[telephone]" value="" title="Telephone" class="input-text required-entry" id="shipping:telephone">
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="buttons-set">
+                    <button type="button" class="button continue" onclick="showStep('opc-shipping_method')"><span>Continue</span></button>
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+          </li>
+
+          <li id="opc-shipping_method" class="section">
+            <div class="step-title"> <span class="number">3</span>
+              <h3 class="one_page_heading">Shipping Method</h3>
+            </div>
+            <div id="checkout-step-shipping-method" class="step a-item" style="display: none;">
+              <form id="co-shipping-method-form" action="#">
+                <dl class="sp-methods">
+                  <dt>
+                    <input type="radio" name="shipping_method" id="s_method_flatrate" value="flatrate_flatrate" checked="checked" class="radio">
+                    <label for="s_method_flatrate">Standard Shipping - <strong>$5.00</strong></label>
+                  </dt>
+                  <dd>Delivery in 5-7 business days</dd>
+                  <dt>
+                    <input type="radio" name="shipping_method" id="s_method_express" value="flatrate_express" class="radio">
+                    <label for="s_method_express">Express Shipping - <strong>$15.00</strong></label>
+                  </dt>
+                  <dd>Delivery in 2-3 business days</dd>
+                  <dt>
+                    <input type="radio" name="shipping_method" id="s_method_overnight" value="flatrate_overnight" class="radio">
+                    <label for="s_method_overnight">Overnight Shipping - <strong>$25.00</strong></label>
+                  </dt>
+                  <dd>Next day delivery</dd>
+                </dl>
+                <div class="buttons-set">
+                  <button type="button" class="button continue" onclick="showStep('opc-payment')"><span>Continue</span></button>
+                </div>
+              </form>
+            </div>
+          </li>
+
+          <li id="opc-payment" class="section">
+            <div class="step-title"> <span class="number">4</span>
+              <h3 class="one_page_heading">Payment Information</h3>
+            </div>
+            <div id="checkout-step-payment" class="step a-item" style="display: none;">
+              <form id="co-payment-form" action="#">
+                <dl class="sp-methods">
+                  <dt>
+                    <input type="radio" name="payment_method" id="p_method_cod" value="cashondelivery" checked="checked" class="radio">
+                    <label for="p_method_cod"><strong>Cash on Delivery</strong></label>
+                  </dt>
+                  <dd>
+                    <p>Pay with cash upon delivery.</p>
+                  </dd>
+                  <dt>
+                    <input type="radio" name="payment_method" id="p_method_card" value="creditcard" class="radio">
+                    <label for="p_method_card"><strong>Credit Card</strong></label>
+                  </dt>
+                  <dd id="payment_form_creditcard" style="display: none;">
+                    <ul class="form-list">
+                      <li>
+                        <label for="card_number">Card Number <span class="required">*</span></label>
+                        <input type="text" id="card_number" name="payment[cc_number]" class="input-text" placeholder="1234 5678 9012 3456">
+                      </li>
+                      <li class="fields">
+                        <div class="input-box">
+                          <label for="card_expiry">Expiry Date <span class="required">*</span></label>
+                          <input type="text" id="card_expiry" name="payment[cc_expiry]" class="input-text" placeholder="MM/YY">
+                        </div>
+                        <div class="input-box">
+                          <label for="card_cvv">CVV <span class="required">*</span></label>
+                          <input type="text" id="card_cvv" name="payment[cc_cvv]" class="input-text" placeholder="123">
+                        </div>
+                      </li>
+                    </ul>
+                  </dd>
+                  <dt>
+                    <input type="radio" name="payment_method" id="p_method_bank" value="banktransfer" class="radio">
+                    <label for="p_method_bank"><strong>Bank Transfer</strong></label>
+                  </dt>
+                  <dd>
+                    <p>Transfer payment directly to our bank account.</p>
+                  </dd>
+                </dl>
+                <div class="buttons-set">
+                  <button type="button" class="button continue" onclick="showStep('opc-review')"><span>Continue to Review</span></button>
+                </div>
+              </form>
+            </div>
+          </li>
+
+          <li id="opc-review" class="section">
+            <div class="step-title"> <span class="number">5</span>
+              <h3 class="one_page_heading">Order Review</h3>
+            </div>
+            <div id="checkout-step-review" class="step a-item">
+              <div class="order-review" id="checkout-review-load">
+                <div class="table-responsive">
+                  <table class="data-table table-striped" id="checkout-review-table" style="width: 100%;">
+                    <thead>
+                      <tr>
+                        <th rowspan="1">Product Name</th>
+                        <th colspan="1" class="a-center">Price</th>
+                        <th rowspan="1" class="a-center">Qty</th>
+                        <th colspan="1" class="a-center">Subtotal</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for item in cart_items %}
+                      <tr>
+                        <td>
+                          <h3 class="product-name">{{ item.accessory.title }}</h3>
+                        </td>
+                        <td class="a-right"><span class="cart-price"><span class="price">${{ item.accessory.price }}</span></span></td>
+                        <td class="a-center">{{ item.quantity }}</td>
+                        <td class="a-right"><span class="cart-price"><span class="price">${{ item.total_price }}</span></span>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td colspan="3" class="a-right">Subtotal</td>
+                        <td class="a-right"><span class="price">${{ cart_subtotal }}</span></td>
+                      </tr>
+                      <tr>
+                        <td colspan="3" class="a-right"><strong>Grand Total</strong></td>
+                        <td class="a-right"><strong><span class="price">${{ cart_subtotal }}</span></strong></td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+                <div id="checkout-review-submit">
+                  <div class="buttons-set" id="review-buttons-container" style="margin-top: 20px;">
+                    <p class="f-left">Forgot an Item? <a href="{% url 'shopping_cart' %}">Edit Your Cart</a></p>
+                    <form action="{% url 'process_checkout' %}" method="post" id="checkout-form" onsubmit="prepareCheckoutForm()">
+                      {% csrf_token %}
+                      <input type="hidden" name="full_name" id="hidden_full_name">
+                      <input type="hidden" name="email" id="hidden_email">
+                      <input type="hidden" name="phone" id="hidden_phone">
+                      <input type="hidden" name="address" id="hidden_address">
+                      <input type="hidden" name="city" id="hidden_city">
+                      <button type="submit" title="Place Order" class="button btn-checkout" style="float: right;"><span><span>Place Order</span></span></button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <aside class="col-right sidebar col-sm-3 wow bounceInUp animated">
+        <div id="checkout-progress-wrapper">
+          <div class="block block-progress">
+            <div class="block-title"> Your Checkout </div>
+            <div class="block-content">
+              <dl>
+                <div id="billing-progress-opcheckout">
+                  <dt class=""> Billing Address</dt>
+                </div>
+                <div id="shipping-progress-opcheckout">
+                  <dt class=""> Shipping Address</dt>
+                </div>
+                <div id="shipping_method-progress-opcheckout">
+                  <dt class=""> Shipping Method</dt>
+                </div>
+                <div id="payment-progress-opcheckout">
+                  <dt class=""> Payment Method</dt>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleBillingForm(value) {
+    const newAddressForm = document.getElementById('billing-new-address-form');
+    if (value === "") {
+      if (newAddressForm) newAddressForm.style.display = 'block';
+    } else {
+      if (newAddressForm) newAddressForm.style.display = 'none';
+    }
+  }
+
+  function toggleShippingMode(isSameAsBilling) {
+  }
+
+  function handleBillingContinue() {
+    const useForShippingYes = document.getElementById('billing:use_for_shipping_yes');
+    if (useForShippingYes && useForShippingYes.checked) {
+      const billingNewForm = document.getElementById('billing-new-address-form');
+      if (billingNewForm && billingNewForm.style.display !== 'none') {
+        document.getElementById('shipping:firstname').value = document.getElementById('billing:firstname').value;
+        document.getElementById('shipping:lastname').value = document.getElementById('billing:lastname').value;
+        document.getElementById('shipping:street1').value = document.getElementById('billing:street1').value;
+        document.getElementById('shipping:city').value = document.getElementById('billing:city').value;
+        document.getElementById('shipping:telephone').value = document.getElementById('billing:telephone').value;
+        document.getElementById('shipping:same_as_billing').checked = true;
+        toggleShippingForm(document.getElementById('shipping:same_as_billing'));
+      }
+      showStep('opc-shipping_method');
+    } else {
+      showStep('opc-shipping');
+    }
+  }
+
+  function prepareCheckoutForm() {
+    var firstName = document.getElementById('shipping:firstname').value;
+    var lastName = document.getElementById('shipping:lastname').value;
+    if (!firstName) firstName = document.getElementById('billing:firstname').value;
+    if (!lastName) lastName = document.getElementById('billing:lastname').value;
+    var fullName = firstName + ' ' + lastName;
+    var address = document.getElementById('shipping:street1').value;
+    if (!address) address = document.getElementById('billing:street1').value;
+    var city = document.getElementById('shipping:city').value;
+    if (!city) city = document.getElementById('billing:city').value;
+    var phone = document.getElementById('shipping:telephone').value;
+    if (!phone) phone = document.getElementById('billing:telephone').value;
+    document.getElementById('hidden_full_name').value = fullName;
+    document.getElementById('hidden_address').value = address;
+    document.getElementById('hidden_city').value = city;
+    document.getElementById('hidden_phone').value = phone;
+  }
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const stepTitles = document.querySelectorAll('.step-title');
+    stepTitles.forEach(function (title) {
+      title.style.cursor = 'pointer';
+      title.addEventListener('click', function () {
+        const stepContent = this.nextElementSibling;
+        if (stepContent && stepContent.classList.contains('step')) {
+          if (stepContent.style.display === 'none' || !stepContent.style.display) {
+            stepContent.style.display = 'block';
+          } else {
+            stepContent.style.display = 'none';
+          }
+        }
+      });
+    });
+
+    const paymentRadios = document.querySelectorAll('input[name="payment_method"]');
+    paymentRadios.forEach(function (radio) {
+      radio.addEventListener('change', function () {
+        const cardForm = document.getElementById('payment_form_creditcard');
+        if (cardForm) {
+          if (this.value === 'creditcard') {
+            cardForm.style.display = 'block';
+          } else {
+            cardForm.style.display = 'none';
+          }
+        }
+      });
+    });
+  });
+
+  function showStep(stepId) {
+    const step = document.getElementById(stepId);
+    if (step) {
+      const stepContent = step.querySelector('.step');
+      if (stepContent) {
+        stepContent.style.display = 'block';
+        step.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }
+
+  function toggleShippingForm(checkbox) {
+    const shippingForm = document.getElementById('shipping-new-address-form');
+    if (shippingForm) {
+      if (checkbox.checked) {
+        shippingForm.style.display = 'none';
+      } else {
+        shippingForm.style.display = 'block';
+      }
+    }
+  }
+</script>
+
+{% endblock %}

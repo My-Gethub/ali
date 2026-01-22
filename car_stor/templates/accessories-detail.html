@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Harrier Accessories Detail - {{ accessory.title }}{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+  <div class="page-title">
+    <h2>Details</h2>
+  </div>
+</div>
+
+<div class="main-container col1-layout wow bounceInUp animated">
+  <div class="main">
+    <div class="col-main">
+      <div class="product-view wow bounceInUp animated" itemscope="" itemtype="http://schema.org/Product"
+        itemid="#product_base">
+        <div id="messages_product_view"></div>
+        <div class="product-essential container">
+          <div class="row">
+            <form action="#" method="post" id="product_addtocart_form">
+              {% csrf_token %}
+              <div class="product-img-box col-lg-5 col-sm-5 col-xs-12">
+                <div class="product-image">
+                  <div class="product-full">
+                    {% if accessory.image %}
+                    <img id="product-zoom" src="{{ accessory.image.url }}" alt="{{ accessory.title }}" />
+                    {% else %}
+                    <img id="product-zoom" src="{% static 'images/no-image.jpg' %}" alt="No Image" />
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+
+              <div class="product-shop col-lg-7 col-sm-7 col-xs-12">
+                <div class="product-name">
+                  <h1>{{ accessory.title }}</h1>
+                </div>
+
+                {% if request.user == accessory.seller %}
+                <div style="margin-bottom: 15px;">
+                  <a href="{% url 'accessory_update' accessory.id %}" class="btn btn-primary">Edit</a>
+                  <a href="{% url 'accessory_delete' accessory.id %}" class="btn btn-danger">Delete</a>
+                </div>
+                {% endif %}
+                <div class="price-block">
+                  <div class="price-box">
+                    <p class="availability in-stock"><span>In Stock</span></p>
+                    <p class="special-price"> <span class="price-label">Price</span> <span id="product-price-48"
+                        class="price"> ${{ accessory.price }} </span> </p>
+                  </div>
+                </div>
+                {% if accessory.seller %}
+                <div class="seller-info" style="margin-bottom: 20px; font-size: 14px;">
+                  Sold by: <span style="color: #ed6663; font-weight: 600;">{{ accessory.seller.username }}</span>
+                </div>
+                {% endif %}
+                <div class="add-to-box">
+                  <div class="add-to-cart">
+                    <div class="pull-left">
+                      <div class="custom pull-left">
+                        <button
+                          onclick="var result = document.getElementById('qty'); var qty = result.value; if( !isNaN( qty ) && qty > 0 ) result.value--;return false;"
+                          class="reduced items-count" type="button"><i class="fa fa-minus">&nbsp;</i></button>
+                        <input type="text" class="input-text qty" title="Qty" value="1" maxlength="12" id="qty"
+                          name="qty">
+                        <button
+                          onclick="var result = document.getElementById('qty'); var qty = result.value; if( !isNaN( qty )) result.value++;return false;"
+                          class="increase items-count" type="button"><i class="fa fa-plus">&nbsp;</i></button>
+                      </div>
+                    </div>
+                    <a href="javascript:void(0);"
+                      onclick="var qty = document.getElementById('qty').value; window.location.href='{% url 'add_to_cart' accessory.id %}?qty=' + qty;"
+                      class="button btn-cart" title="Add to Cart">Add to Cart</a>
+                  </div>
+                </div>
+                <div class="short-description">
+                  <p>{{ accessory.description|truncatewords:50 }}</p>
+                </div>
+                <div class="email-addto-box">
+                  <ul class="add-to-links">
+                    <li> <a class="link-wishlist" href="{% url 'toggle_wishlist_accessory' accessory.id %}">
+                        <span>
+                          {% if accessory in request.user.wishlist.get.accessories.all %}
+                          Remove from Wishlist
+                          {% else %}
+                          Add to Wishlist
+                          {% endif %}
+                        </span>
+                      </a></li>
+                    <li><a class="link-compare" href="{% url 'compare' %}"><span>Add to Compare</span></a></li>
+                  </ul>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="product-collateral container">
+          <ul id="product-detail-tab" class="nav nav-tabs product-tabs">
+            <li class="active"> <a href="#product_tabs_description" data-toggle="tab"> Description </a> </li>
+          </ul>
+          <div id="productTabContent" class="tab-content">
+            <div class="tab-pane fade in active" id="product_tabs_description">
+              <div class="std">
+                <p>{{ accessory.description }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="box-additional">
+          <div class="related-pro container">
+            <div class="slider-items-products">
+              <div class="new_title center">
+                <h2>Related Accessories</h2>
+              </div>
+              <div id="related-slider" class="product-flexslider hidden-buttons">
+                <div class="slider-items slider-width-col4 products-grid">
+                  {% for item in related_accessories %}
+                  <div class="item">
+                    <div class="item-inner">
+                      <div class="item-img">
+                        <div class="item-img-info">
+                          <a href="{% url 'accessory_detail' item.id %}" title="{{ item.title }}" class="product-image">
+                            {% if item.image %}
+                            <img src="{{ item.image.url }}" alt="{{ item.title }}">
+                            {% else %}
+                            <img src="{% static 'images/no-image.jpg' %}" alt="No Image">
+                            {% endif %}
+                          </a>
+                        </div>
+                      </div>
+                      <div class="item-info">
+                        <div class="info-inner">
+                          <div class="item-title">
+                            <a href="{% url 'accessory_detail' item.id %}" title="{{ item.title }}">{{ item.title }}</a>
+                          </div>
+                          <div class="item-price">
+                            <div class="price-box">
+                              <span class="regular-price">
+                                <span class="price">${{ item.price }}</span>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

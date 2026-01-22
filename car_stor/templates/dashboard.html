@@ -1,0 +1,385 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-heading">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="page-title">
+          <h2>My Dashboard</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main-container col1-layout wow bounceInUp animated animated" style="visibility: visible;">
+  <div class="main">
+    <div class="col-main">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="block block-account">
+              <div class="block-title">
+                <strong><span>My Account</span></strong>
+              </div>
+              <div class="block-content">
+                <ul>
+                  <li class="current"><strong>My Dashboard</strong></li>
+                  <li><a href="{% url 'car_create' %}">Sell a Car</a></li>
+                  <li><a href="{% url 'logout' %}">Log Out</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-9">
+            <div class="my-account">
+              <div class="dashboard">
+                <div class="welcome-msg">
+                  <strong>Hello, {{ user.username }}!</strong>
+                  <p>From your My Account Dashboard you have the ability to view a snapshot of your recent account
+                    activity and update your account information.</p>
+                  <div style="margin-top: 10px;">
+                    <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile Information</a>
+                  </div>
+                </div>
+                <div class="box-account box-recent">
+                  <div class="box-head">
+                    <h2>My Car Listings</h2>
+                    <a href="{% url 'car_create' %}" class="btn btn-primary"
+                      style="background-color: #ed6663; border-color: #ed6663; color: #fff; padding: 5px 15px; text-transform: uppercase; font-weight: bold;">
+                      <i class="fa fa-plus"></i> Add New Car
+                    </a>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="data-table" id="my-orders-table">
+                      <thead>
+                        <tr class="first last">
+                          <th>Image</th>
+                          <th>Title</th>
+                          <th>Price</th>
+                          <th>Date Added</th>
+                          <th>Status</th>
+                          <th class="last">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for car in cars %}
+                        <tr class="{% cycle 'odd' 'even' %}">
+                          <td>
+                            {% if car.image %}
+                            <img src="{{ car.image.url }}" width="80" alt="{{ car.title }}">
+                            {% else %}
+                            <span class="nobr">No Image</span>
+                            {% endif %}
+                          </td>
+                          <td><a href="{% url 'car_detail' car.id %}">{{ car.title }}</a></td>
+                          <td><span class="price">${{ car.price }}</span></td>
+                          <td><span class="nobr">{{ car.created_at|date:"M d, Y" }}</span></td>
+                          <td><em>{{ car.status }}</em></td>
+                          <td class="last">
+                            <div class="nobr" style="display: flex; gap: 5px;">
+                              <a href="{% url 'car_detail' car.id %}" class="button"
+                                style="padding: 5px 10px; font-size: 12px; background: #333; color: #fff; border: none;"
+                                title="View"><i class="fa fa-eye"></i></a>
+                              <a href="{% url 'car_update' car.id %}" class="button"
+                                style="padding: 5px 10px; font-size: 12px; background: #6c6; color: #fff; border: none;"
+                                title="Edit"><i class="fa fa-pencil"></i></a>
+                              <a href="{% url 'car_delete' car.id %}" class="button"
+                                style="padding: 5px 10px; font-size: 12px; background: #ed6663; color: #fff; border: none;"
+                                title="Delete"><i class="fa fa-trash"></i></a>
+                            </div>
+                          </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                          <td colspan="6">You have not posted any cars yet.</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- My Accessory Listings Section -->
+            <div class="my-account" style="margin-top: 30px;">
+              <div class="dashboard">
+                <div class="box-account box-recent">
+                  <div class="box-head">
+                    <h2>My Accessory Listings</h2>
+                    <a href="{% url 'accessory_create' %}" class="btn btn-primary"
+                      style="background-color: #ed6663; border-color: #ed6663; color: #fff; padding: 5px 15px; text-transform: uppercase; font-weight: bold;">
+                      <i class="fa fa-plus"></i> Add Accessory
+                    </a>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="data-table" id="my-accessories-table">
+                      <thead>
+                        <tr class="first last">
+                          <th>Image</th>
+                          <th>Title</th>
+                          <th>Price</th>
+                          <th>Date Added</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for accessory in accessories %}
+                        <tr class="{% cycle 'odd' 'even' %}">
+                          <td>
+                            {% if accessory.image %}
+                            <img src="{{ accessory.image.url }}" width="80" alt="{{ accessory.title }}">
+                            {% else %}
+                            <span class="nobr">No Image</span>
+                            {% endif %}
+                          </td>
+                          <td><a href="{% url 'accessory_detail' accessory.id %}">{{ accessory.title }}</a></td>
+                          <td><span class="price">${{ accessory.price }}</span></td>
+                          <td><span class="nobr">{{ accessory.created_at|date:"M d, Y" }}</span></td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                          <td colspan="4">You have not posted any accessories yet.</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Received Accessory Orders Section -->
+            <div class="my-account" style="margin-top: 30px;">
+              <div class="dashboard">
+                <div class="box-account box-recent">
+                  <div class="box-head">
+                    <h2>Accessory Orders Received</h2>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="data-table" id="received-accessory-orders-table">
+                      <thead>
+                        <tr class="first last">
+                          <th>Order #</th>
+                          <th>Customer</th>
+                          <th>Total</th>
+                          <th>Status</th>
+                          <th class="last">Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for order in received_accessory_orders %}
+                        <tr class="{% cycle 'odd' 'even' %}">
+                          <td>#{{ order.id }}</td>
+                          <td>{{ order.full_name }}</td>
+                          <td><span class="price">${{ order.total_price }}</span></td>
+                          <td><em>{{ order.status }}</em></td>
+                          <td class="last">
+                            <span class="nobr">{{ order.created_at|date:"M d, Y" }}</span>
+                            {% if order.status == 'Pending' %}
+                            <div style="margin-top: 10px;">
+                              <a href="{% url 'approve_accessory_order' order.id %}" class="btn btn-success btn-xs"
+                                style="background-color: #28a745; border-color: #28a745; color: white; padding: 2px 8px; margin-right: 5px;">Approve</a>
+                              <a href="{% url 'decline_accessory_order' order.id %}" class="btn btn-danger btn-xs"
+                                style="background-color: #dc3545; border-color: #dc3545; color: white; padding: 2px 8px;">Decline</a>
+                            </div>
+                            {% endif %}
+                          </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                          <td colspan="5">No accessory orders received yet.</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- Received Car Orders Section -->
+            <div class="my-account" style="margin-top: 30px;">
+              <div class="dashboard">
+                <div class="box-account box-recent">
+                  <div class="box-head">
+                    <h2>Orders Received (For My Cars)</h2>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="data-table" id="received-orders-table">
+                      <thead>
+                        <tr class="first last">
+                          <th>Order #</th>
+                          <th>Car</th>
+                          <th>Customer</th>
+                          <th>Total</th>
+                          <th>Status</th>
+                          <th class="last">Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for order in received_car_orders %}
+                        <tr class="{% cycle 'odd' 'even' %}">
+                          <td>#{{ order.id }}</td>
+                          <td><a href="{% url 'car_detail' order.car.id %}">{{ order.car.title }}</a></td>
+                          <td>{{ order.full_name }}</td>
+                          <td><span class="price">${{ order.total_price }}</span></td>
+                          <td><em>{{ order.status }}</em></td>
+                          <td class="last">
+                            <span class="nobr">{{ order.created_at|date:"M d, Y" }}</span>
+                            {% if order.status == 'Pending' %}
+                            <div style="margin-top: 10px;">
+                              <a href="{% url 'approve_car_order' order.id %}" class="btn btn-success btn-xs"
+                                style="background-color: #28a745; border-color: #28a745; color: white; padding: 2px 8px; margin-right: 5px;">Approve</a>
+                              <a href="{% url 'decline_car_order' order.id %}" class="btn btn-danger btn-xs"
+                                style="background-color: #dc3545; border-color: #dc3545; color: white; padding: 2px 8px;">Decline</a>
+                            </div>
+                            {% endif %}
+                          </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                          <td colspan="6">No orders received for your listings yet.</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Received Inquiries Section -->
+            <div class="my-account" style="margin-top: 30px;">
+              <div class="dashboard">
+                <div class="box-account box-recent">
+                  <div class="box-head">
+                    <h2>Listing Inquiries</h2>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="data-table" id="received-inquiries-table">
+                      <thead>
+                        <tr class="first last">
+                          <th>Car</th>
+                          <th>From</th>
+                          <th>Email</th>
+                          <th>Message</th>
+                          <th class="last">Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for inquiry in received_inquiries %}
+                        <tr class="{% cycle 'odd' 'even' %}">
+                          <td><a href="{% url 'car_detail' inquiry.car.id %}">{{ inquiry.car.title }}</a></td>
+                          <td>{{ inquiry.name }}</td>
+                          <td>{{ inquiry.email }}</td>
+                          <td>{{ inquiry.message|truncatechars:100 }}</td>
+                          <td class="last"><span class="nobr">{{ inquiry.created_at|date:"M d, Y" }}</span></td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                          <td colspan="5">No inquiries received for your listings yet.</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {% if platform_accessory_orders %}
+            <!-- Platform Accessory Orders (Admin Only) -->
+            <div class="my-account" style="margin-top: 30px;">
+              <div class="dashboard">
+                <div class="box-account box-recent">
+                  <div class="box-head">
+                    <h2>Platform Accessory Sales (Admin)</h2>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="data-table" id="platform-accessory-orders-table">
+                      <thead>
+                        <tr class="first last">
+                          <th>Order #</th>
+                          <th>Customer</th>
+                          <th>Total</th>
+                          <th>Status</th>
+                          <th class="last">Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for order in platform_accessory_orders %}
+                        <tr class="{% cycle 'odd' 'even' %}">
+                          <td>#{{ order.id }}</td>
+                          <td>{{ order.full_name }}</td>
+                          <td><span class="price">${{ order.total_price }}</span></td>
+                          <td><em>{{ order.status }}</em></td>
+                          <td class="last"><span class="nobr">{{ order.created_at|date:"M d, Y" }}</span></td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                          <td colspan="5">No accessory orders on the platform yet.</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+
+            <div class="my-account" style="margin-top: 30px;">
+              <div class="dashboard">
+                <div class="box-account box-recent">
+                  <div class="box-head">
+                    <h2>My Accessory Orders</h2>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="data-table" id="my-accessory-orders-table">
+                      <thead>
+                        <tr class="first last">
+                          <th>Order #</th>
+                          <th>Date</th>
+                          <th>Total</th>
+                          <th>Status</th>
+                          <th class="last">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for order in orders %}
+                        <tr class="{% cycle 'odd' 'even' %}">
+                          <td>#{{ order.id }}</td>
+                          <td><span class="nobr">{{ order.created_at|date:"M d, Y" }}</span></td>
+                          <td><span class="price">${{ order.total_price }}</span></td>
+                          <td><em>{{ order.status }}</em></td>
+                          <td class="last">
+                            <div class="nobr">
+                              <a href="{% url 'order_success' %}?order_id={{ order.id }}" class="button"
+                                style="padding: 5px 15px; font-size: 12px; background: #333; color: #fff; border: none;"
+                                title="View Order"><i class="fa fa-eye"></i> View Order</a>
+                            </div>
+                          </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                          <td colspan="5">You have not placed any accessory orders yet.</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

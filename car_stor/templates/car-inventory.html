@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{% if selected_category %}Cars in {{ selected_category.name }}{% else %}Car Inventory{% endif %} -
+Harrier Car Store{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+    <div class="page-title">
+        <h2>
+            {% if is_search %}
+            Search Results: {{ results_count }} cars found
+            {% if selected_category %} in {{ selected_category.name }}{% endif %}
+            {% if selected_status %} ({{ selected_status }}){% endif %}
+            {% if selected_year %} [{{ selected_year }}]{% endif %}
+            {% elif selected_category %}
+            CARS IN {{ selected_category.name|upper }}
+            {% else %}
+            ALL AVAILABLE CARS
+            {% endif %}
+        </h2>
+    </div>
+</div>
+
+</div>
+
+<style>
+    /* Fix for grid layout gaps caused by uneven heights */
+    @media (min-width: 992px) {
+        .products-grid>.item:nth-child(3n+1) {
+            clear: left;
+        }
+    }
+
+    @media (max-width: 991px) and (min-width: 768px) {
+        .products-grid>.item:nth-child(3n+1) {
+            clear: left;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .products-grid>.item:nth-child(2n+1) {
+            clear: left;
+        }
+    }
+</style>
+
+<section class="main-container col2-left-layout bounceInUp animated">
+    <div class="container">
+        <div class="row">
+            <div class="col-main col-sm-9 col-sm-push-3 product-grid">
+                <div class="pro-coloumn">
+                    <article class="col-main">
+                        <div class="toolbar">
+                            <div class="sorter">
+                                <div class="view-mode"> <span title="Grid"
+                                        class="button button-active button-grid">&nbsp;</span> </div>
+                            </div>
+                        </div>
+                        <div class="category-products">
+                            <ul class="products-grid">
+                                {% for car in cars %}
+                                <li class="item col-lg-4 col-md-4 col-sm-4 col-xs-6">
+                                    <div class="item-inner">
+                                        <div class="item-img">
+                                            <div class="item-img-info">
+                                                <a href="{% url 'car_detail' car.id %}" class="product-image">
+                                                    {% if car.image %}
+                                                    <img src="{{ car.image.url }}" alt="{{ car.title }}">
+                                                    {% else %}
+                                                    <img src="{% static 'products-images/p1.jpg' %}"
+                                                        alt="{{ car.title }}">
+                                                    {% endif %}
+                                                </a>
+                                                <div class="new-label new-top-left">{{ car.status }}</div>
+                                                {% if car.old_price %}
+                                                <div class="sale-label sale-top-left">Sale</div>
+                                                {% endif %}
+                                                <div class="item-box-hover">
+                                                    <div class="box-inner">
+                                                        <div class="add_cart">
+                                                            <button class="button btn-cart" type="button"
+                                                                title="Buy Now"
+                                                                onclick="window.location='{% url 'car_checkout' car.id %}';"></button>
+                                                        </div>
+                                                        <div class="product-detail-bnt"><a
+                                                                href="{% url 'car_detail' car.id %}"
+                                                                class="button detail-bnt"><span>Quick View</span></a>
+                                                        </div>
+                                                        <div class="actions"><span class="add-to-links"><a
+                                                                    href="{% url 'toggle_wishlist' car.id %}"
+                                                                    class="link-wishlist"
+                                                                    title="Add to Wishlist"><span>Add to
+                                                                        Wishlist</span></a> </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="item-info">
+                                            <div class="info-inner">
+                                                <div class="item-title">
+                                                    <a href="{% url 'car_detail' car.id %}">
+                                                        {{ car.title }}
+                                                    </a>
+                                                </div>
+                                                <div class="item-content">
+                                                    <div class="item-price">
+                                                        <div class="price-box">
+                                                            <span class="regular-price">
+                                                                <span class="price">${{ car.price }}</span>
+                                                            </span>
+                                                            {% if car.old_price %}
+                                                            <p class="old-price">
+                                                                <span class="price-label">Regular Price:</span>
+                                                                <span class="price">${{ car.old_price }}</span>
+                                                            </p>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                    <div class="other-info">
+                                                        <div class="col-km">
+                                                            <i class="fa fa-tachometer"></i>
+                                                            {{ car.mileage }}km
+                                                        </div>
+                                                        <div class="col-engine">
+                                                            <i class="fa fa-gear"></i>
+                                                            {{ car.transmission }}
+                                                        </div>
+                                                        <div class="col-date">
+                                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                            {{ car.model_year }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                {% empty %}
+                                <p>No cars available at the moment.</p>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </article>
+                </div>
+            </div>
+            {% include 'includes/_sidebar.html' %}
+        </div>
+    </div>
+</section>
+{% endblock %}

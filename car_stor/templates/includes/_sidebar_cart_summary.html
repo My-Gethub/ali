@@ -1,0 +1,4 @@
+<div class="summary">
+    <p class="amount">There are <a href="{% url 'shopping_cart' %}">{{ cart_item_count }} item{{ cart_item_count|pluralize }}</a> in your cart.</p>
+    <p class="subtotal"> <span class="label">Cart Subtotal:</span> <span class="price">${{ cart_subtotal }}</span> </p>
+</div>

@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Compare Cars - Harrier Car Store{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+  <div class="page-title">
+    <h2>Compare Cars</h2>
+  </div>
+</div>
+
+<div class="main-container col1-layout wow bounceInUp animated animated" style="visibility: visible;">
+  <div class="main">
+    <div class="container">
+      <div class="b-compare-images">
+        <div class="row">
+          <div class="col-md-3 col-sm-4 col-xs-12 col-md-offset-3">
+            <div>
+              <h3>New 2019 Audi A6 2.0</h3>
+              <img src="{% static 'products-images/p48.jpg' %}" alt="image">
+              <div class="b-compare-price">
+                <div class="b-compare__images-item-price-vs">vs</div>$90,600
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-4 col-xs-12 ">
+            <div>
+              <h3>2019 Porsche Cayenne</h3>
+              <img src="{% static 'products-images/p47.jpg' %}" alt="image">
+              <div class="b-compare-price">
+                <div class="b-compare__images-item-price-vs">vs</div>$52,650
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-4 col-xs-12">
+            <div>
+              <h3>Hyundai EON 2019</h3>
+              <img src="{% static 'products-images/p49.jpg' %}" alt="image">
+              <div class="b-compare-price">$120,440</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="b-compare-block">
+        <h2 style="background: #50b2fc;">Basic Information</h2>
+        <div class="row">
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <div class="b-compare__block-inside-title"> Make / Year </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <div class="b-compare__block-inside-value"> New 2019 Audi A6 2.0 </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <div class="b-compare__block-inside-value"> 2019 Porsche Cayenne </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <div class="b-compare__block-inside-value"> Hyundai EON 2019 </div>
+          </div>
+        </div>
+        <!-- More comparison rows here -->
+        <div class="row">
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <div class="b-compare__block-inside-title"> Front Head Room </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <div class="b-compare__block-inside-value"> 39.5 in </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <div class="b-compare__block-inside-value"> 38.0 in </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <div class="b-compare__block-inside-value"> 37.9 in </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="b-compare-block">
+        <h2>MECHANICAL FEATURES</h2>
+        <div class="row">
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <div class="b-compare__block-inside-title"> Base Engine / Cylinders </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <div class="b-compare__block-inside-value"> 5.0 L / V8 </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <div class="b-compare__block-inside-value"> 201 L / Inline 4 </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <div class="b-compare__block-inside-value"> 5.0 L / V8 </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="b-compare-block">
+        <h2 style="background-color: #3e6274;">EXTERIOR / INTERIOR FEATURES</h2>
+        <div class="row">
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <div class="b-compare__block-inside-title"> All Season Tires </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <div class="b-compare__block-inside-value"> Optional </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <div class="b-compare__block-inside-value"> Standard </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <div class="b-compare__block-inside-value"> Standard </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,426 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>{% block title %}Harrier Car Store{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Default Description">
+  <meta name="keywords" content="fashion, store, E-commerce">
+  <meta name="robots" content="*">
+  <link rel="icon" href="#" type="image/x-icon">
+  <link rel="shortcut icon" href="#" type="image/x-icon">
+
+  <!-- CSS Style -->
+  <link rel="stylesheet" type="text/css" href="{% static 'stylesheet/bootstrap.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'stylesheet/font-awesome.css' %}" media="all">
+  <link rel="stylesheet" type="text/css" href="{% static 'stylesheet/bootstrap-select.css' %}">
+
+  <link rel="stylesheet" type="text/css" href="{% static 'stylesheet/revslider.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'stylesheet/owl.carousel.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'stylesheet/owl.theme.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.bxslider.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'stylesheet/jquery.mobile-menu.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'stylesheet/style.css' %}?v=1.9" media="all">
+  <link rel="stylesheet" type="text/css" href="{% static 'stylesheet/responsive.css' %}" media="all">
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,700italic,400,600,700,800'
+    rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css?family=Teko:300,400,500,600,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Saira+Condensed:300,400,500,600,700,800" rel="stylesheet">
+  <style>
+    /* Notification Bell & Dropdown Styles */
+    .mini-notification .notification-icon a i {
+      font-size: 24px !important;
+      color: #333;
+    }
+
+    .mini-notification .notification-icon a:hover i {
+      color: #ed6663;
+    }
+
+    .mini-notification .notification-icon a span {
+      background: #ed6663 !important;
+      color: #fff !important;
+      font-size: 11px !important;
+      width: 20px !important;
+      height: 20px !important;
+      line-height: 20px !important;
+      border-radius: 50% !important;
+      top: 10px !important;
+      right: -5px !important;
+    }
+
+    .btn-view-all-notif {
+      background: #ed6663 !important;
+      color: #fff !important;
+      padding: 12px !important;
+      font-family: 'Saira Condensed', sans-serif !important;
+      font-weight: 600 !important;
+      text-transform: uppercase !important;
+      display: block !important;
+      width: 100% !important;
+      border: none !important;
+      transition: 0.3s !important;
+      font-size: 16px !important;
+      text-align: center !important;
+    }
+
+    .btn-view-all-notif:hover {
+      background: #333 !important;
+    }
+
+    .btn-view-all-notif:before {
+      content: "\f06e";
+      font-family: FontAwesome;
+      margin-right: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="page">
+    <header>
+      <div class="container">
+        <div class="row">
+          <div id="header">
+            <div class="header-container">
+              <div class="header-logo"> <a href="{% url 'index' %}" title="Car HTML" class="logo">
+                  <div><img src="{% static 'images/logo.png' %}" alt="Car Store"></div>
+                </a> </div>
+              <div class="header__nav">
+                <div class="header-banner">
+                  <div class="col-lg-6 col-xs-12 col-sm-6 col-md-6">
+                    <div class="assetBlock">
+                      <div style="height: 20px; overflow: hidden;" id="slideshow">
+                        <p style="display: block;">Hot days! - <span>50%</span> Get ready for summer! </p>
+                        <p style="display: none;">Save up to <span>40%</span> Hurry limited offer!</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 col-lg-6 col-xs-12 col-sm-6 col-md-6 call-us"><i class="fa fa-phone"></i> +1 800
+                    789 0000</div>
+                </div>
+                <div class="fl-header-right"
+                  style="display: flex; align-items: center; justify-content: flex-end; float: right;">
+                  <div class="collapse navbar-collapse" style="margin-right: 40px;">
+                    <div class="fl-notification-contain">
+                      <div class="mini-notification">
+                        <div class="notification-icon">
+                          <a href="{% url 'notifications' %}" title="Notifications">
+                            <i class="fa fa-bell"></i>
+                            {% if unread_notification_count > 0 %}
+                            <span>{{ unread_notification_count }}</span>
+                            {% endif %}
+                          </a>
+                        </div>
+                        <div class="fl-notif-dropdown" style="display: none;">
+                          <div class="block-subtitle">
+                            <div class="top-subtotal">Notifications</div>
+                          </div>
+                          <ul class="mini-products-list">
+                            {% if latest_notifications %}
+                            {% for notification in latest_notifications %}
+                            <li class="item">
+                              <div class="message">{{ notification.message }}</div>
+                              <div class="date">{{ notification.created_at|date:"M d, H:i" }}</div>
+                            </li>
+                            {% endfor %}
+                            {% else %}
+                            <li class="item">
+                              <div class="message text-center">No new notifications</div>
+                            </li>
+                            {% endif %}
+                          </ul>
+                          <div class="actions">
+                            <button class="btn-view-all-notif" title="View All" type="button"
+                              onClick="window.location.href='{% url 'notifications' %}';"><span> All</span></button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="fl-cart-contain">
+                    <div class="mini-cart">
+                      <div class="basket">
+                        <a href="{% url 'shopping_cart' %}"><span>{{ cart_item_count }}</span></a>
+                      </div>
+                      <div class="fl-mini-cart-content" style="display: none;">
+                        <div class="top-subtotal">
+                          {{ cart_item_count }} items, <span class="price">${{ cart_subtotal }}</span>
+                        </div>
+                        <ul class="mini-products-list" id="cart-sidebar">
+                          {% if current_cart and current_cart.items.exists %}
+                          {% for item in current_cart.items.all|slice:":3" %}
+                          <li class="item {% if forloop.first %}first{% endif %} {% if forloop.last %}last{% endif %}">
+                            <div class="item-inner">
+                              <a class="product-image" title="{{ item.accessory.title }}"
+                                href="{% url 'accessory_detail' item.accessory.id %}">
+                                {% if item.accessory.image %}
+                                <img alt="{{ item.accessory.title }}" src="{{ item.accessory.image.url }}">
+                                {% else %}
+                                <img alt="No Image" src="{% static 'images/no-image.jpg' %}">
+                                {% endif %}
+                              </a>
+                              <div class="product-details">
+                                <div class="access">
+                                  <a class="btn-remove1" title="Remove This Item"
+                                    href="{% url 'remove_from_cart' item.id %}">Remove</a>
+                                </div>
+                                <div class="cart-data-row">
+                                  <strong>{{ item.quantity }}</strong> x <span class="price">
+                                    ${{ item.accessory.price|floatformat:2 }}
+                                  </span>
+                                </div>
+                                <p class="product-name">
+                                  <a href="{% url 'accessory_detail' item.accessory.id %}">
+                                    {{ item.accessory.title|truncatechars:25 }}
+                                  </a>
+                                </p>
+                              </div>
+                            </div>
+                          </li>
+                          {% endfor %}
+                          {% else %}
+                          <li class="item first last">
+                            <div class="item-inner">
+                              <p class="text-center" style="margin: 10px 0;">Your cart is empty.</p>
+                            </div>
+                          </li>
+                          {% endif %}
+                        </ul>
+                        <div class="actions">
+                          <button class="btn-checkout" title="Checkout" type="button"
+                            onClick="window.location.href='{% url 'checkout' %}';"><span>Checkout</span></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="fl-links">
+                    <div class="no-js"> <a title="" class="clicker"></a>
+                      <div class="fl-nav-links">
+                        <div class="language-currency">
+                          <div class="fl-language">
+                            <h3>Language</h3>
+                            <ul class="lang">
+                              <li><a href="#"> <img src="{% static 'images/english.png' %}" alt="English">
+                                  <span>English</span> </a></li>
+                              <li><a href="#"> <img src="{% static 'images/francais.png' %}" alt="French">
+                                  <span>French</span> </a></li>
+                              <li><a href="#"> <img src="{% static 'images/german.png' %}" alt="German">
+                                  <span>German</span> </a></li>
+                            </ul>
+                          </div>
+                          <div class="fl-currency">
+                            <h3>Currency</h3>
+                            <ul class="currencies_list">
+                              <li><a href="#" title="EGP"> <strong>£</strong> Pound Sterling</a></li>
+                              <li><a href="#" title="EUR"> <strong>€</strong> Euro</a></li>
+                              <li><a href="#" title="USD"> <strong>$</strong> US Dollar</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                        <h3>My Account</h3>
+                        <ul class="links">
+                          <li><a href="{% url 'wishlist' %}" title="Wishlist">Wishlist</a></li>
+                          <li><a href="{% url 'shopping_cart' %}" title="Cart">Shopping Cart</a></li>
+                          {% if user.is_authenticated %}
+                          <li><a href="{% url 'dashboard' %}" title="My Dashboard">Welcome, {{ user.username }}</a></li>
+                          {% if user.is_staff %}
+                          <li><a href="{% url 'admin_dashboard' %}" title="Admin Panel" style="color: red;">Admin
+                              Panel</a></li>
+                          {% endif %}
+                          <li><a href="{% url 'logout' %}" title="Logout">Logout</a></li>
+                          {% else %}
+                          <li><a href="{% url 'login' %}" title="Login">Login</a></li>
+                          <li><a href="{% url 'register' %}" title="Register">Register</a></li>
+                          {% endif %}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="fl-nav-menu">
+                  <nav>
+                    <div class="mm-toggle-wrap">
+                      <div class="mm-toggle"><i class="fa fa-bars"></i><span class="mm-label">Menu</span> </div>
+                    </div>
+                    <div class="nav-inner">
+                      <ul id="nav" class="hidden-xs">
+                        <li class="{% if not active_page %}active{% endif %}"> <a class="level-top"
+                            href="{% url 'index' %}"><span>Home</span></a></li>
+
+                        <li class="level0 parent drop-menu {% if active_page == 'all_cars' %}active{% endif %}">
+                          <a class="level-top" href="{% url 'car_inventory' %}"><span>Cars</span></a>
+                          <ul class="level1">
+                            <li class="level1"><a href="{% url 'car_inventory' %}"><span>All Cars</span></a></li>
+                            <li class="level1"><a href="{% url 'search' %}?status=New"><span>New Cars</span></a></li>
+                            <li class="level1"><a href="{% url 'search' %}?status=Used"><span>Used Cars</span></a>
+                            </li>
+                          </ul>
+                        </li>
+
+                        <li class="{% if active_page == 'accessories' %}active{% endif %}"> <a class="level-top"
+                            href="{% url 'grid' %}"><span>Parts</span></a></li>
+
+                        <li class="{% if active_page == 'compare' %}active{% endif %}"> <a class="level-top"
+                            href="{% url 'compare' %}"><span>Compare</span></a></li>
+
+                        <li class="{% if active_page == 'wishlist' %}active{% endif %}"> <a class="level-top"
+                            href="{% url 'wishlist' %}"><span>Wishlist</span></a></li>
+
+                        <li class="{% if active_page == 'blog' %}active{% endif %}"> <a class="level-top"
+                            href="{% url 'blog' %}"><span>Blog</span></a></li>
+                        <li class="{% if active_page == 'about_us' %}active{% endif %}"> <a class="level-top"
+                            href="{% url 'about_us' %}"><span>About Us</span></a></li>
+                        <li class="{% if active_page == 'contact_us' %}active{% endif %}"> <a class="level-top"
+                            href="{% url 'contact_us' %}"><span>Contact</span></a></li>
+                        <li> <a class="level-top" href="{% url 'car_create' %}"><span>Sell Car</span></a></li>
+                      </ul>
+                    </div>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    {% block content %}
+    {% endblock %}
+
+    <footer>
+      <div class="newsletter-row">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col1">
+              <div class="newsletter-wrap">
+                <h5>Newsletter</h5>
+                <h4>Get Notified Of any Updates!</h4>
+                <form action="{% url 'newsletter' %}" method="post" id="newsletter-validate-detail1">
+                  {% csrf_token %}
+                  <div id="container_form_news">
+                    <div id="container_form_news2">
+                      <input type="text" name="email" id="newsletter1" title="Sign up for our newsletter"
+                        class="input-text required-entry validate-email" placeholder="Enter your email address">
+                      <button type="submit" title="Subscribe" class="button subscribe"><span>Subscribe</span></button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-4 col-xs-12 col-lg-4">
+            <div class="co-info">
+              <h4>SHOWROOM</h4>
+              <address>
+                <div><span>ThemesGround, 789 Main rd, Anytown, <br>
+                    CA 12345 USA</span></div>
+                <div> <span> +1 800 789 0000</span></div>
+                <div> <span><a href="#">Harrier@themesground.com</a></span></div>
+                <div> <span>Mon - Fri : 09am to 06pm</span></div>
+              </address>
+            </div>
+          </div>
+          <div class="col-sm-8 col-xs-12 col-lg-8">
+            <div class="footer-column">
+              <h4>Quick Links</h4>
+              <ul class="links">
+                <li class="first"><a title="Blog" href="{% url 'blog' %}">Blog</a></li>
+                <li><a title="About Us" href="{% url 'about_us' %}">About Us</a></li>
+                <li><a title="Contact Us" href="{% url 'contact_us' %}">Contact Us</a></li>
+                <li><a title="All Cars" href="{% url 'car_inventory' %}">All Cars</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-top">
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-12 col-sm-4">
+              <div class="social">
+                <ul>
+                  <li class="fb"><a href="#"></a></li>
+                  <li class="tw"><a href="#"></a></li>
+                  <li class="googleplus"><a href="#"></a></li>
+                  <li class="rss"><a href="#"></a></li>
+                  <li class="pintrest"><a href="#"></a></li>
+                  <li class="linkedin"><a href="#"></a></li>
+                  <li class="youtube"><a href="#"></a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-sm-4 col-xs-12 coppyright">&copy; {% now "Y" %} Harrier Car Store. All Rights Reserved.
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <div class="payment-accept"> <img src="{% static 'images/payment-1.png' %}" alt=""> <img
+                  src="{% static 'images/payment-2.png' %}" alt=""> <img src="{% static 'images/payment-3.png' %}"
+                  alt=""> <img src="{% static 'images/payment-4.png' %}" alt=""> </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <div id="mobile-menu">
+    <ul>
+      <li>
+        <div class="mm-search">
+          <form id="search1" name="search">
+            <div class="input-group">
+              <div class="input-group-btn">
+                <button class="btn btn-default" type="submit"><i class="fa fa-search"></i> </button>
+              </div>
+              <input type="text" class="form-control simple" placeholder="Search ..." name="srch-term" id="srch-term">
+            </div>
+          </form>
+        </div>
+      </li>
+      <li class="{% if not active_page %}active{% endif %}"> <a class="level-top"
+          href="{% url 'index' %}"><span>Home</span></a></li>
+      <li class="{% if active_page == 'all_cars' %}active{% endif %}"> <a class="level-top"
+          href="{% url 'car_inventory' %}"><span>All Cars</span></a></li>
+      <li class="{% if active_page == 'accessories' %}active{% endif %}"> <a class="level-top"
+          href="{% url 'grid' %}"><span>Accessories</span></a></li>
+      <li class="{% if active_page == 'blog' %}active{% endif %}"> <a class="level-top"
+          href="{% url 'blog' %}"><span>Blog</span></a></li>
+      <li class="{% if active_page == 'about_us' %}active{% endif %}"> <a class="level-top"
+          href="{% url 'about_us' %}"><span>About Us</span></a></li>
+      <li class="{% if active_page == 'contact_us' %}active{% endif %}"> <a class="level-top"
+          href="{% url 'contact_us' %}"><span>Contact Us</span></a></li>
+      {% if user.is_authenticated %}
+      <li><a href="{% url 'dashboard' %}"><span>My Dashboard ({{ user.username }})</span></a></li>
+      {% if user.is_staff %}
+      <li><a href="{% url 'admin_dashboard' %}"><span style="color: red;">Admin Panel</span></a></li>
+      {% endif %}
+      <li><a href="{% url 'logout' %}"><span>Logout</span></a></li>
+      {% else %}
+      <li><a href="{% url 'login' % title=" Login">Login</a></li>
+      <li><a href="{% url 'register' %}"><span>Register</span></a></li>
+      {% endif %}
+    </ul>
+  </div>
+
+  <!-- JavaScript -->
+  <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap-slider.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap-select.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/parallax.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/revslider.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/common.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.bxslider.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/owl.carousel.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.mobile-menu.min.js' %}"></script>
+  <script src="{% static 'js/countdown.js' %}"></script>
+  {% block extra_scripts %}{% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Checkout Billing - Harrier Car Store{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="page-title">
+          <h2>Checkout</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main-container col2-right-layout">
+  <div class="main container">
+    <div class="row">
+      <section class="col-main col-sm-9 wow bounceInUp animated">
+        <ol class="one-page-checkout" id="checkoutSteps">
+          <li id="opc-billing" class="section allow active">
+            <div class="step-title"> <span class="number">1</span>
+              <h3 class="one_page_heading"> Billing Information</h3>
+            </div>
+            <div id="checkout-step-billing" class="step a-item">
+              <form id="co-billing-form" action="#">
+                <fieldset class="group-select">
+                  <ul>
+                    <li id="billing-new-address-form">
+                      <fieldset>
+                        <ul>
+                          <li class="fields">
+                            <div class="customer-name">
+                              <div class="input-box name-firstname">
+                                <label for="billing:firstname">First Name<span class="required">*</span></label>
+                                <div class="input-box1">
+                                  <input type="text" id="billing:firstname" name="billing[firstname]"
+                                    value="{{ request.user.first_name }}" title="First Name" maxlength="255"
+                                    class="input-text required-entry">
+                                </div>
+                              </div>
+                              <div class="input-box name-lastname">
+                                <label for="billing:lastname">Last Name<span class="required">*</span></label>
+                                <div class="input-box1">
+                                  <input type="text" id="billing:lastname" name="billing[lastname]"
+                                    value="{{ request.user.last_name }}" title="Last Name" maxlength="255"
+                                    class="input-text required-entry">
+                                </div>
+                              </div>
+                            </div>
+                          </li>
+                          <li class="fields">
+                            <div class="input-box">
+                              <label for="billing:company">Company</label>
+                              <input type="text" id="billing:company" name="billing[company]" value="" title="Company"
+                                class="input-text ">
+                            </div>
+                          </li>
+                          <li class="wide">
+                            <label for="billing:street1">Address<em class="required">*</em></label>
+                            <br>
+                            <input type="text" title="Street Address" name="billing[street][]" id="billing:street1"
+                              value="" class="input-text  required-entry">
+                          </li>
+                          <li class="fields">
+                            <div class="input-box">
+                              <label for="billing:city">City<em class="required">*</em></label>
+                              <input type="text" title="City" name="billing[city]" value=""
+                                class="input-text  required-entry" id="billing:city">
+                            </div>
+                          </li>
+                          <li class="fields">
+                            <div class="input-box">
+                              <label for="billing:telephone">Telephone<em class="required">*</em></label>
+                              <input type="text" name="billing[telephone]" value="" title="Telephone"
+                                class="input-text  required-entry" id="billing:telephone">
+                            </div>
+                          </li>
+                          <li class="fields">
+                            <div class="input-box">
+                              <label for="billing:email">Email Address<em class="required">*</em></label>
+                              <input type="text" name="billing[email]" value="{{ request.user.email }}"
+                                title="Email Address" class="input-text validate-email required-entry"
+                                id="billing:email">
+                            </div>
+                          </li>
+                        </ul>
+                      </fieldset>
+                    </li>
+                  </ul>
+                  <div class="buttons-set" id="billing-buttons-container">
+                    <p class="required">* Required Fields</p>
+                    <button type="button" title="Continue" class="button continue"
+                      onClick="window.location='{% url 'checkout' %}';"><span>Continue</span></button>
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <aside class="col-right sidebar col-sm-3 wow bounceInUp animated">
+        <div id="checkout-progress-wrapper">
+          <div class="block block-progress">
+            <div class="block-title"> Your Checkout </div>
+            <div class="block-content">
+              <dl>
+                <div id="billing-progress-opcheckout">
+                  <dt> Billing Address </dt>
+                </div>
+                <div id="shipping-progress-opcheckout">
+                  <dt> Shipping Address </dt>
+                </div>
+                <div id="shipping_method-progress-opcheckout">
+                  <dt> Shipping Method </dt>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+{% endblock %}

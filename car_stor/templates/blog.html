@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Blog - Harrier Car Store{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="page-title">
+          <h2>Blog</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main-container col2-right-layout">
+  <div class="main container">
+    <div class="row">
+      <div class="col-left sidebar col-sm-3 blog-side">
+        <div class="block widget_search">
+          <form id="searchform" action="#" method="get">
+            <div class="input-group">
+              <input type="text" name="s" id="s" placeholder="Search For" class="input-text" autocomplete="off">
+              <div class="input-group-append">
+                <button type="submit" class="thm-search"><i class="fa fa-search"></i></button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div id="secondary" class="widget_wrapper13" role="complementary">
+          <div id="recent-posts-4" class="popular-posts widget block" style="visibility: visible;">
+            <h2 class="widget-title">Recent Posts</h2>
+            <ul class="posts-list unstyled clearfix">
+              {% for post in posts|slice:":3" %}
+              <li>
+                <figure class="featured-thumb"> <a href="{% url 'blog_detail' post.id %}">
+                    {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}">
+                    {% else %}
+                    <img src="{% static 'images/blog-img1_1.jpg' %}" alt="blog image">
+                    {% endif %}
+                  </a> </figure>
+                <div class="content-info">
+                  <h4><a href="{% url 'blog_detail' post.id %}" title="{{ post.title }}">{{ post.title }}</a></h4>
+                  <p class="post-meta">
+                    <time class="entry-date">{{ post.created_at|date:"M d, Y" }}</time>
+                  </p>
+                </div>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div id="categories-2" class="widget widget_categories block" style="visibility: visible;">
+            <h2 class="widget-title">Categories</h2>
+            <ul>
+              <li><a href="#">PhotoShop</a> <span class="count">2</span></li>
+              <li><a href="#">News</a> <span class="count">8</span></li>
+              <li><a href="#">Illustration</a> <span class="count">3</span></li>
+              <li><a href="#">Foods and Drinks</a> <span class="count">7</span></li>
+              <li><a href="#">Social</a> <span class="count">4</span></li>
+              <li><a href="#">Technology</a> <span class="count">9</span></li>
+              <li><a href="#">Uncategorized</a> <span class="count">1</span></li>
+              <li><a href="#">Videos</a> <span class="count">8</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-main col-sm-9 main-blog">
+        <div id="main" class="blog-wrapper">
+          <div id="primary" class="site-content">
+            <div id="content" role="main">
+              {% for post in posts %}
+              <article id="post-{{ post.id }}" class="blog_entry clearfix wow bounceInUp animated animated animated"
+                style="visibility: visible;">
+
+                <div class="entry-content">
+                  {% if post.image %}
+                  <div class="featured-thumb"><a href="{% url 'blog_detail' post.id %}"><img src="{{ post.image.url }}"
+                        alt="{{ post.title }}"></a></div>
+                  {% endif %}
+                  <header class="blog_entry-header clearfix">
+                    <div class="blog_entry-header-inner">
+                      <h2 class="blog_entry-title">
+                        <a href="{% url 'blog_detail' post.id %}">{{ post.title }}</a>
+                      </h2>
+                    </div>
+                  </header>
+                  <div class="entry-content">
+                    <ul class="post-meta">
+                      <li><i class="fa fa-user"></i>posted by <a href="#">{{ post.author.username }}</a> </li>
+                      <li><i class="fa fa-clock-o"></i><span class="day">{{ post.created_at|date:"d" }}</span> <span
+                          class="month">{{ post.created_at|date:"M" }}</span></li>
+                    </ul>
+                    <p>{{ post.content|truncatewords:50 }}</p>
+                  </div>
+                  <div class="thm-readmore"><a href="{% url 'blog_detail' post.id %}" class="btn">READ MORE</a></div>
+                </div>
+              </article>
+              {% empty %}
+              <p>No blog posts found.</p>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .blog_entry .featured-thumb img {
+    width: 100%;
+    height: auto;
+  }
+</style>
+
+{% endblock %}

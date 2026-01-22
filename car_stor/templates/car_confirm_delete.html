@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-heading">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="page-title">
+                    <h2>Delete Car</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-container col1-layout wow bounceInUp animated animated" style="visibility: visible;">
+    <div class="main">
+        <div class="account-login container">
+            <div class="col-main">
+                <div class="content">
+                    <div class="alert alert-warning">
+                        Are you sure you want to delete "<strong>{{ car.title }}</strong>"? This action cannot be
+                        undone.
+                    </div>
+                    <form action="#" method="post">
+                        {% csrf_token %}
+                        <div class="buttons-set">
+                            <button type="submit" class="button delete-account"
+                                style="background-color: #d9534f; border-color: #d43f3a;"><span><span>Confirm
+                                        Delete</span></span></button>
+                            <a href="{% url 'car_detail' car.id %}" class="back-link">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

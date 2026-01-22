@@ -1,0 +1,42 @@
+{% load static %}
+<aside class="col-left sidebar col-sm-3 col-xs-12 col-sm-pull-9 wow bounceInUp animated">
+    <div class="side-nav-categories">
+        <div class="block-title"> Categories </div>
+        <div class="box-content box-category">
+            <ul>
+                {% if active_page == 'all_cars' %}
+                {% include 'includes/_sidebar_cars.html' %}
+                {% elif active_page == 'car_inventory' %}
+                {% include 'includes/_sidebar_cars.html' %}
+                {% elif active_page == 'car_inventory_category' %}
+                {% include 'includes/_sidebar_cars.html' %}
+                {% elif active_page == 'accessories' %}
+                {% include 'includes/_sidebar_acc.html' %}
+                {% elif active_page == 'grid_category' %}
+                {% include 'includes/_sidebar_acc.html' %}
+                {% elif active_page == 'list_accessories' %}
+                {% include 'includes/_sidebar_acc.html' %}
+                {% elif active_page == 'list1_category' %}
+                {% include 'includes/_sidebar_acc.html' %}
+                {% else %}
+                <li>
+                    <a href="{% url 'car_inventory' %}">View Inventory</a>
+                </li>
+                <li>
+                    <a href="{% url 'grid' %}">View Accessories</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="block block-cart">
+        <div class="block-title ">My Cart</div>
+        <div class="block-content">
+            {% include 'includes/_sidebar_cart_summary.html' %}
+            <div class="ajax-checkout">
+                <a href="{% url 'checkout' %}" class="button button-checkout" title="Checkout"><span>Checkout</span></a>
+            </div>
+        </div>
+    </div>
+</aside>

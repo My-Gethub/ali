@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+{% if selected_category %}{{ selected_category.name }} - Accessories{% else %}Accessories List{% endif %} - Harrier Car
+Store
+{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+  <div class="page-title">
+    <h2>
+      {% if selected_category %}
+      {{ selected_category.name|upper }} ACCESSORIES
+      {% else %}
+      ALL ACCESSORIES
+      {% endif %}
+    </h2>
+  </div>
+</div>
+
+<section class="main-container col2-left-layout bounceInUp animated">
+  <div class="container">
+    <div class="row">
+      <div class="col-main col-sm-9 col-sm-push-3 product-grid">
+        <div class="pro-coloumn">
+          <article class="col-main">
+            <div class="toolbar">
+              <div class="sorter">
+                <div class="view-mode">
+                  <a href="{% url 'grid' %}{% if selected_category %}/category/{{ selected_category.id }}/{% endif %}"
+                    title="Grid" class="button-grid">&nbsp;</a>
+                  <span title="List" class="button button-active button-list">&nbsp;</span>
+                </div>
+              </div>
+            </div>
+            <div class="category-products">
+              <ol class="products-list" id="products-list">
+                {% for accessory in accessories %}
+                <li class="item {% if forloop.first %}first{% endif %}">
+                  <div class="product-image">
+                    <a href="{% url 'accessory_detail' accessory.id %}" title="{{ accessory.title }}">
+                      <img class="small-image" src="{{ accessory.image.url }}" alt="{{ accessory.title }}">
+                    </a>
+                  </div>
+                  <div class="product-shop">
+                    <h2 class="product-name">
+                      <a href="{% url 'accessory_detail' accessory.id %}" title="{{ accessory.title }}">{{ accessory.title }}</a>
+                    </h2>
+                    <div class="desc std">
+                      <p>{{ accessory.description|truncatewords:40 }}</p>
+                    </div>
+                    <div class="price-box">
+                      {% if accessory.old_price %}
+                      <p class="old-price">
+                        <span class="price-label"></span>
+                        <span class="price"> ${{ accessory.old_price }} </span>
+                      </p>
+                      {% endif %}
+                      <p class="special-price">
+                        <span class="price-label"></span>
+                        <span class="price"> ${{ accessory.price }} </span>
+                      </p>
+                    </div>
+                    <div class="actions">
+                      <a href="{% url 'add_to_cart' accessory.id %}" class="button btn-cart" title="Add to Cart">
+                        <span><i class="fa fa-shopping-cart"></i> Add to Cart</span>
+                      </a>
+                      <span class="add-to-links">
+                        <a title="Add to Wishlist" class="button link-wishlist"
+                          href="{% url 'toggle_wishlist_accessory' accessory.id %}"
+                          style="{% if accessory in request.user.wishlist.get.accessories.all %}color: #e74c3c;{% endif %}">
+                          <span>
+                            <i
+                              class="fa fa-heart{% if accessory in request.user.wishlist.get.accessories.all %}{% else %}-o{% endif %}"></i>
+                            {% if accessory in request.user.wishlist.get.accessories.all %}Wishlisted{% else %}Add to
+                            Wishlist{% endif %}
+                          </span>
+                        </a>
+                      </span>
+                    </div>
+                  </div>
+                </li>
+                {% empty %}
+                <li>
+                  <p class="text-center" style="padding: 50px 0;">No accessories found in this category.</p>
+                </li>
+                {% endfor %}
+              </ol>
+            </div>
+          </article>
+        </div>
+      </div>
+      <aside class="col-left sidebar col-sm-3 col-xs-12 col-sm-pull-9 wow bounceInUp animated">
+        {% include 'includes/_sidebar.html' %}
+      </aside>
+    </div>
+  </div>
+</section>
+{% endblock %}

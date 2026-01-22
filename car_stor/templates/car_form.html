@@ -1,0 +1,253 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-heading">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="page-title">
+                    <h2>Sell Your Car</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-section {
+        background: #fff;
+        padding: 25px;
+        margin-bottom: 25px;
+        border: 1px solid #e5e5e5;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .form-section h3 {
+        margin-top: 0;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eee;
+        font-size: 20px;
+        color: #333;
+        font-weight: 600;
+    }
+
+    .form-group label {
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: #555;
+    }
+
+    .form-control {
+        height: 45px;
+        border-radius: 3px;
+        box-shadow: none;
+        border-color: #ddd;
+    }
+
+    .form-control:focus {
+        border-color: #39b54a;
+        /* Theme Green */
+        box-shadow: none;
+    }
+
+    .required {
+        color: #d9534f;
+    }
+
+    .checkbox-grid {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .checkbox-grid .checkbox {
+        width: 33.33%;
+        margin-top: 10px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+
+    .checkbox-grid .checkbox label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+    }
+
+    .checkbox-grid .checkbox input[type="checkbox"] {
+        margin: 0 10px 0 0;
+        /* Added right margin for spacing */
+        width: 18px;
+        height: 18px;
+        position: static;
+        /* Ensure it doesn't float or absolute position on top */
+        vertical-align: middle;
+    }
+
+    .buttons-set {
+        margin-top: 10px;
+        margin-bottom: 40px;
+    }
+
+    .create-account {
+        padding: 12px 30px;
+        font-size: 16px;
+        background: #39b54a;
+        border: none;
+        color: white;
+        text-transform: uppercase;
+        font-weight: bold;
+        transition: all 0.3s;
+    }
+
+    .create-account:hover {
+        background: #333;
+        color: white;
+    }
+
+    @media (max-width: 768px) {
+        .checkbox-grid .checkbox {
+            width: 50%;
+        }
+    }
+</style>
+
+<div class="main-container col1-layout wow bounceInUp animated" style="visibility: visible;">
+    <div class="main">
+        <div class="account-login container">
+            <form action="#" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="col-main">
+
+                    {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <strong>Please correct the following errors:</strong>
+                    </div>
+                    {% endif %}
+
+                    <!-- Section 1: Basic Information -->
+                    <div class="form-section">
+                        <h3>Basic Information</h3>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Vehicle Title <span class="required">*</span></label>
+                                    {{ form.title }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Category <span class="required">*</span></label>
+                                    {{ form.category }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Condition <span class="required">*</span></label>
+                                    {{ form.status }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Main Image <span class="required">*</span></label>
+                                    {{ form.image }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Description <span class="required">*</span></label>
+                                    {{ form.description }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Specifications & Price -->
+                    <div class="form-section">
+                        <h3>Specifications & Price</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Price ($) <span class="required">*</span></label>
+                                    {{ form.price }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Old Price ($) <small class="text-muted">(Optional)</small></label>
+                                    {{ form.old_price }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Model Year <span class="required">*</span></label>
+                                    {{ form.model_year }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Mileage (km) <span class="required">*</span></label>
+                                    {{ form.mileage }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Fuel Type <span class="required">*</span></label>
+                                    {{ form.fuel_type }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Transmission <span class="required">*</span></label>
+                                    {{ form.transmission }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Engine</label>
+                                    {{ form.engine }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Features -->
+                    <div class="form-section">
+                        <h3>Vehicle Features</h3>
+                        <div class="checkbox-grid">
+                            <div class="checkbox"><label>{{ form.air_conditioner }} Air Conditioner</label></div>
+                            <div class="checkbox"><label>{{ form.power_windows }} Power Windows</label></div>
+                            <div class="checkbox"><label>{{ form.power_steering }} Power Steering</label></div>
+                            <div class="checkbox"><label>{{ form.central_locking }} Central Locking</label></div>
+                            <div class="checkbox"><label>{{ form.abs }} ABS</label></div>
+                            <div class="checkbox"><label>{{ form.airbags }} Airbags</label></div>
+                            <div class="checkbox"><label>{{ form.leather_seats }} Leather Seats</label></div>
+                        </div>
+                    </div>
+
+                    <div class="buttons-set">
+                        <button type="submit" class="button create-account" style="width: 100%;">
+                            <span><span>Submit Vehicle Listing</span></span>
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

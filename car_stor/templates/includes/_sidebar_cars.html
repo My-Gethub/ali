@@ -1,0 +1,13 @@
+<li>
+    <a href="{% url 'car_inventory' %}" class="{% if not selected_category %}active{% endif %}">
+        All Cars
+    </a>
+</li>
+{% for cat in categories %}
+<li>
+    <a href="{% url 'car_inventory_category' cat.id %}"
+        class="{% if selected_category and selected_category.id == cat.id %}active{% endif %}">
+        {{ cat.name }}
+    </a>
+</li>
+{% endfor %}

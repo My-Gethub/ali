@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Multiple Addresses - Harrier Car Store{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="state_bar">
+          <ul class="checkout-progress" id="checkout-progress-state">
+            <li title="Select Addresses" class="active first">Select Addresses</li>
+            <li title="Shipping Information">Shipping Information</li>
+            <li title="Billing Information">Billing Information</li>
+            <li title="Place Order">Place Order</li>
+            <li title="Order Success" class="last">Order Success</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main-container col1-layout">
+  <div class="main container">
+    <div class="multiple_addresses multiple-checkout">
+      <div class="table-responsive">
+        <form id="checkout_multishipping_form" action="#" method="post">
+          {% csrf_token %}
+          <div class="page-title_multi">
+            <h2>Ship to Multiple Addresses</h2>
+          </div>
+          <div class="title-buttons">
+            <button type="button" title="Enter a New Address" class="button new-address"><span>Enter a New
+                Address</span></button>
+          </div>
+          <div class="addresses">
+            <fieldset>
+              <input type="hidden" name="continue" value="0" id="can_continue_flag">
+              <input type="hidden" name="new_address" value="0" id="add_new_address_flag">
+              <p>Please select shipping address for applicable items</p>
+              <table class="data-table table-striped" id="multiship-addresses-table">
+                <thead>
+                  <tr class="first last">
+                    <th>Product</th>
+                    <th class="a-center">Qty</th>
+                    <th>Send To</th>
+                    <th>Remove</th>
+                  </tr>
+                </thead>
+                <tfoot>
+                  <tr class="first last">
+                    <td colspan="100" class="a-right last">
+                      <button type="submit" title="Update Qty &amp; Addresses" class="button btn-update"><span>Update
+                          Qty &amp; Addresses</span></button>
+                    </td>
+                  </tr>
+                </tfoot>
+                <tbody>
+                  <tr class="first odd">
+                    <td>
+                      <h3 class="product-name"><a href="#">Sample Car Accessory</a></h3>
+                    </td>
+                    <td><input type="text" name="qty" value="1" size="2" class="input-text qty"></td>
+                    <td>
+                      <select name="address" class="">
+                        <option value="1" selected="selected">john doe, Street road, AL, Alabama 42136, United States
+                        </option>
+                      </select>
+                    </td>
+                    <td class="a-center last"><a class="btn-remove btn-remove2" href="#" title="Remove Item"></a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </fieldset>
+          </div>
+        </form>
+      </div>
+      <div class="buttons-set">
+        <a class="back-link" href="{% url 'shopping_cart' %}"><small>« </small>Back to Shopping Cart</a>
+        <button type="submit" title="Continue to Shipping Information" class="button btn-continue"><span>Continue to
+            Shipping Information</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

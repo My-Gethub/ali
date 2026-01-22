@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-heading">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="page-title">
+                    <h2>Create an Account</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-container col1-layout wow bounceInUp animated animated" style="visibility: visible;">
+    <div class="main">
+        <div class="account-login container">
+            <form action="{% url 'register' %}" method="post" id="register-form">
+                {% csrf_token %}
+                <div class="col-main">
+                    <div class="content">
+                        {% if form.errors %}
+                        <div class="alert alert-danger">Please correct the errors below.</div>
+                        {% endif %}
+                        <ul class="form-list">
+                            {{ form.as_ul }}
+                        </ul>
+                        <div class="buttons-set">
+                            <button type="submit" class="button create-account"
+                                title="Register"><span><span>Register</span></span></button>
+                            <a href="{% url 'login' %}" class="back-link"><small>&laquo; </small>Back to Login</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

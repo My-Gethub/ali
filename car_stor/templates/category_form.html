@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-heading">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="page-title">
+                    <h2>{% if form.instance.pk %}Edit{% else %}Add Value{% endif %} Category</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-container col1-layout wow bounceInUp animated animated" style="visibility: visible;">
+    <div class="main">
+        <div class="col-main">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <div class="account-login">
+                            <form action="" method="post" id="login-form">
+                                {% csrf_token %}
+                                <div class="col-1 new-users">
+                                    <div class="content">
+                                        <ul class="form-list">
+                                            {% for field in form %}
+                                            <li>
+                                                <label for="{{ field.id_for_label }}">{{ field.label }} {% if
+                                                    field.field.required %}<span class="required">*</span>{% endif
+                                                    %}</label>
+                                                <br>
+                                                {{ field }}
+                                                {% if field.errors %}
+                                                <div class="validation-advice">{{ field.errors }}</div>
+                                                {% endif %}
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                        <div class="buttons-set">
+                                            <button type="submit" class="button login"><span>Save
+                                                    Category</span></button>
+                                            <a href="{% url 'admin_dashboard' %}" class="button"
+                                                style="background: #ccc; padding: 7px 15px; color: #333; margin-left: 10px;"><span>Cancel</span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,278 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-heading">
+  <div class="page-title">
+    <h2>{{ car.title }}</h2>
+  </div>
+</div>
+<!-- BEGIN Main Container -->
+<div class="main-container col1-layout wow bounceInUp animated">
+  <div class="main">
+    <div class="col-main">
+      <div class="product-view wow bounceInUp animated" itemscope="" itemtype="http://schema.org/Product"
+        itemid="#product_base">
+        <div id="messages_product_view"></div>
+        <div class="product-essential container">
+          <div class="row">
+            <div class="product-img-box col-lg-5 col-sm-5 col-xs-12">
+              <div class="new-label new-top-left">{{ car.status }}</div>
+              {% if car.old_price %}
+              <div class="sale-label sale-top-left">Sale</div>
+              {% endif %}
+              <div class="product-image">
+                <div class="product-full">
+                  {% if car.image %}
+                  <img id="product-zoom1" src="{{ car.image.url }}" data-zoom-image="{{ car.image.url }}"
+                    alt="{{ car.title }}" />
+                  {% else %}
+                  <img id="product-zoom1" src="{% static 'products-images/p46.jpg' %}" alt="Default Image" />
+                  {% endif %}
+                </div>
+              </div>
+              <div class="toll-free"><a href="#"><i class="fa fa-phone"></i> +1 800 789 0000</a></div>
+
+              <!-- Contact Seller Block -->
+              <div class="block block-list block-viewed"
+                style="margin-top: 20px; padding: 15px; background: #f9f9f9; border: 1px solid #eee;">
+                <div class="block-title">
+                  <h3>Contact Seller</h3>
+                </div>
+                <div class="block-content">
+                  <form method="post" action="{% url 'car_detail' car.id %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                      {{ inquiry_form.name }}
+                    </div>
+                    <div class="form-group">
+                      {{ inquiry_form.email }}
+                    </div>
+                    <div class="form-group">
+                      {{ inquiry_form.phone }}
+                      <small class="text-muted">Phone (Optional)</small>
+                    </div>
+                    <div class="form-group">
+                      {{ inquiry_form.message }}
+                    </div>
+                    <button type="submit" name="submit_inquiry" class="button btn-cart" style="width: 100%;"><span>Send
+                        Inquiry</span></button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <div class="product-shop col-lg-7 col-sm-7 col-xs-12">
+              <div class="brand">{{ car.category.name|default:"Uncategorized" }}</div>
+              <div class="product-name">
+                <h1>{{ car.title }}</h1>
+              </div>
+
+              {% if request.user == car.seller %}
+              <div style="margin-bottom: 15px;">
+                <a href="{% url 'car_update' car.id %}" class="btn btn-primary">Edit</a>
+                <a href="{% url 'car_delete' car.id %}" class="btn btn-danger">Delete</a>
+              </div>
+              {% endif %}
+
+              <div class="add-to-box" style="margin-bottom: 20px;">
+                <a href="{% url 'car_checkout' car.id %}" class="button btn-continue"
+                  style="background: #e74c3c; color: white; border: none; padding: 12px 25px; display: inline-block; margin-right: 10px; text-decoration: none;">
+                  <i class="fa fa-shopping-cart"></i> BUY NOW
+                </a>
+                <a href="{% url 'toggle_wishlist' car.id %}" class="button btn-cart"
+                  style="background: #3e6274; color: white; border: none; padding: 12px 25px; display: inline-block; text-decoration: none;">
+                  {% if car in request.user.wishlist.get.cars.all %}
+                  <i class="fa fa-heart"></i> Remove from Wishlist
+                  {% else %}
+                  <i class="fa fa-heart-o"></i> Add to Wishlist
+                  {% endif %}
+                </a>
+              </div>
+
+
+              <div class="price-block">
+                <div class="price-box">
+                  <p class="special-price">
+                    <span class="price-label">Price</span>
+                    <span id="product-price-48" class="price">${{ car.price }}</span>
+                  </p>
+                  {% if car.old_price %}
+                  <p class="old-price">
+                    <span class="price-label">Regular Price:</span>
+                    <span class="price"
+                      style="text-decoration: line-through; color: #999; font-size: 18px; margin-left: 10px;">${{ car.old_price }}</span>
+                  </p>
+                  {% endif %}
+                </div>
+              </div>
+
+              <div class="spec-row" id="summarySpecs">
+                <h2>Specifications</h2>
+                <table width="100%">
+                  <tbody>
+                    <tr>
+                      <td class="label-spec"> Mileage <span class="coln">:</span></td>
+                      <td class="value-spec"> {{ car.mileage }} km </td>
+                    </tr>
+                    <tr>
+                      <td class="label-spec"> Engine <span class="coln">:</span></td>
+                      <td class="value-spec"> {{ car.engine }} </td>
+                    </tr>
+                    <tr class="odd">
+                      <td class="label-spec"> Transmission <span class="coln">:</span></td>
+                      <td class="value-spec"> {{ car.transmission }} </td>
+                    </tr>
+                    <tr class="odd">
+                      <td class="label-spec"> Fuel Type <span class="coln">:</span></td>
+                      <td class="value-spec"> {{ car.fuel_type }} </td>
+                    </tr>
+                    <tr>
+                      <td class="label-spec"> Model Year <span class="coln">:</span></td>
+                      <td class="value-spec"> {{ car.model_year }} </td>
+                    </tr>
+                    <tr>
+                      <td class="label-spec"> Seller <span class="coln">:</span></td>
+                      <td class="value-spec"> {{ car.seller.username }} </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-collateral container">
+          <ul id="product-detail-tab" class="nav nav-tabs product-tabs">
+            <li class="active"> <a href="#product_tabs_description" data-toggle="tab"> Vehicle Overview </a> </li>
+            <li> <a href="#product_tabs_features" data-toggle="tab">Features</a> </li>
+            <li> <a href="#product_tabs_reviews" data-toggle="tab">Reviews ({{ reviews.count }})</a> </li>
+          </ul>
+          <div id="productTabContent" class="tab-content">
+            <div class="tab-pane fade in active" id="product_tabs_description">
+              <div class="std">
+                <p>{{ car.description|linebreaks }}</p>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="product_tabs_features">
+              <div class="spec-row" id="summarySpecs">
+                <table width="100%">
+                  <tbody>
+                    {% if car.air_conditioner %}
+                    <tr>
+                      <td class="label-spec"> Air Conditioner <span class="coln">:</span></td>
+                      <td class="value-spec"> <i class="fa fa-check-circle" style="color: #6c6; font-size: 16px;"></i>
+                      </td>
+                    </tr>
+                    {% endif %}
+                    {% if car.abs %}
+                    <tr>
+                      <td class="label-spec"> AntiLock Braking System <span class="coln">:</span></td>
+                      <td class="value-spec"> <i class="fa fa-check-circle" style="color: #6c6; font-size: 16px;"></i>
+                      </td>
+                    </tr>
+                    {% endif %}
+                    {% if car.power_steering %}
+                    <tr class="odd">
+                      <td class="label-spec"> Power Steering <span class="coln">:</span></td>
+                      <td class="value-spec"> <i class="fa fa-check-circle" style="color: #6c6; font-size: 16px;"></i>
+                      </td>
+                    </tr>
+                    {% endif %}
+                    {% if car.power_windows %}
+                    <tr class="odd">
+                      <td class="label-spec"> Power Windows <span class="coln">:</span></td>
+                      <td class="value-spec"> <i class="fa fa-check-circle" style="color: #6c6; font-size: 16px;"></i>
+                      </td>
+                    </tr>
+                    {% endif %}
+                    {% if car.leather_seats %}
+                    <tr>
+                      <td class="label-spec"> Leather Seats <span class="coln">:</span></td>
+                      <td class="value-spec"> <i class="fa fa-check-circle" style="color: #6c6; font-size: 16px;"></i>
+                      </td>
+                    </tr>
+                    {% endif %}
+                    {% if car.central_locking %}
+                    <tr class="odd">
+                      <td class="label-spec"> Central Locking <span class="coln">:</span></td>
+                      <td class="value-spec"> <i class="fa fa-check-circle" style="color: #6c6; font-size: 16px;"></i>
+                      </td>
+                    </tr>
+                    {% endif %}
+                    {% if car.airbags %}
+                    <tr>
+                      <td class="label-spec"> Airbags <span class="coln">:</span></td>
+                      <td class="value-spec"> <i class="fa fa-check-circle" style="color: #6c6; font-size: 16px;"></i>
+                      </td>
+                    </tr>
+                    {% endif %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="product_tabs_reviews">
+              <div class="col-sm-5 col-lg-5 col-xs-12">
+                <div class="reviews-content-left">
+                  <h2>Customer Reviews</h2>
+                  {% for review in reviews %}
+                  <div class="review-item" style="border-bottom: 1px solid #eee; padding: 10px 0;">
+                    <div class="review-title"><strong>{{ review.title }}</strong></div>
+                    <div class="review-rating">
+                      {% for i in "12345" %}
+                      {% if forloop.counter <= review.rating %} <i class="fa fa-star" style="color: #ed6663;"></i>
+                        {% else %}
+                        <i class="fa fa-star-o" style="color: #ed6663;"></i>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="review-content">{{ review.content }}</div>
+                    <div class="review-meta"><small>By {{ review.user.username }} on {{ review.created_at|date:"M d, Y" }}</small></div>
+                  </div>
+                  {% empty %}
+                  <p>No reviews yet. Be the first to review!</p>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="col-sm-7 col-lg-7 col-xs-12">
+                <div class="reviews-content-right">
+                  <h2>Write Your Own Review</h2>
+                  {% if user.is_authenticated %}
+                  <form action="{% url 'car_detail' car.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                      <label>Rating</label>
+                      <select name="rating" class="form-control" required>
+                        <option value="5">5 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="2">2 Stars</option>
+                        <option value="1">1 Star</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Title</label>
+                      <input type="text" name="title" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                      <label>Review</label>
+                      <textarea name="content" class="form-control" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" name="submit_review" class="button btn-cart"><span>Submit
+                        Review</span></button>
+                  </form>
+                  {% else %}
+                  <p>Please <a href="{% url 'login' %}">login</a> to write a review.</p>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

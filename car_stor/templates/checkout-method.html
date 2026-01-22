@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Checkout Method - Harrier Car Store{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="page-title">
+          <h2>Checkout</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main-container col2-right-layout">
+  <div class="main container">
+    <div class="row">
+      <section class="col-main col-sm-9 wow bounceInUp animated">
+        <ol class="one-page-checkout" id="checkoutSteps">
+          <li id="opc-login" class="section allow active">
+            <div class="step-title"> <span class="number">1</span>
+              <h3 class="one_page_heading"> Checkout Method</h3>
+            </div>
+            <div id="checkout-step-login" class="step a-item">
+              {% if request.user.is_authenticated %}
+              <div class="col2-set">
+                <div class="col-1">
+                  <h3>Welcome back, {{ request.user.first_name|default:request.user.username }}!</h3>
+                  <p>You are currently logged in as <strong>{{ request.user.username }}</strong> ({{ request.user.email }}).</p>
+                  <p>Registering with us gives you easy access to your order history and status.</p>
+                  <div class="buttons-set1">
+                    <p class="required">&nbsp;</p>
+                    <button id="onepage-logged-in-continue" type="button" class="button continue"
+                      onClick="window.location='{% url 'checkout_billing_info' %}';"><span><span>Continue</span></span></button>
+                  </div>
+                </div>
+              </div>
+              {% else %}
+              <div class="col2-set">
+                <div class="col-1">
+                  <h3>Checkout as a Guest or Register</h3>
+                  <p>Register with us for future convenience:</p>
+                  <ul class="form-list">
+                    <li class="control">
+                      <input type="radio" name="checkout_method" id="login:guest" value="guest" class="radio">
+                      <label for="login:guest">Checkout as Guest</label>
+                    </li>
+                    <li class="">
+                      <input type="radio" name="checkout_method" id="login:register" value="register" class="radio">
+                      <label for="login:register">Register</label>
+                    </li>
+                  </ul>
+                  <h4>Register and save time!</h4>
+                  <p>Register with us for future convenience:</p>
+                  <ul class="ul">
+                    <li>Fast and easy check out</li>
+                    <li>Easy access to your order history and status</li>
+                  </ul>
+                  <div class="buttons-set1">
+                    <p class="required">&nbsp;</p>
+                    <button id="onepage-guest-register-button" type="button" class="button continue"
+                      onClick="window.location='{% url 'checkout_billing_info' %}';"><span><span>Continue</span></span></button>
+                  </div>
+                </div>
+                <div class="col-2">
+                  <h3>Login</h3>
+                  <form id="login-form" action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+                    <fieldset>
+                      <h4>Already registered?</h4>
+                      <p>Please log in below:</p>
+                      <ul class="form-list">
+                        <li>
+                          <div class="input-box">
+                            <label for="login-email">Username Address<em class="required">*</em></label>
+                            <br>
+                            <input type="text" class="input-text required-entry" id="login-email" name="username"
+                              value="">
+                          </div>
+                        </li>
+                        <li>
+                          <div class="input-box">
+                            <label for="login-password">Password<em class="required">*</em></label>
+                            <br>
+                            <input type="password" class="input-text required-entry" id="login-password"
+                              name="password">
+                          </div>
+                        </li>
+                      </ul>
+                    </fieldset>
+                    <div class="buttons-set">
+                      <p class="required">* Required Fields</p>
+                      <button type="submit" class="button login"><span><span>Login</span></span></button>
+                      <a href="#" class="f-right">Forgot your password?</a>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          </li>
+        </ol>
+      </section>
+      <aside class="col-right sidebar col-sm-3 wow bounceInUp animated">
+        <div id="checkout-progress-wrapper">
+          <div class="block block-progress">
+            <div class="block-title"> Your Checkout </div>
+            <div class="block-content">
+              <dl>
+                <div id="billing-progress-opcheckout">
+                  <dt> Billing Address </dt>
+                </div>
+                <div id="shipping-progress-opcheckout">
+                  <dt> Shipping Address </dt>
+                </div>
+                <div id="shipping_method-progress-opcheckout">
+                  <dt> Shipping Method </dt>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+{% endblock %}

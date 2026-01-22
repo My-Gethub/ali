@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ post.title }} - Harrier Car Store{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="page-title">
+                    <h2>{{ post.title }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-container col1-layout">
+    <div class="main container">
+        <div class="row">
+            <div class="col-main col-sm-12">
+                <div class="blog-wrapper">
+                    <div class="site-content">
+                        <article class="blog_entry clearfix">
+                            <div class="entry-content">
+                                {% if post.image %}
+                                <div class="featured-thumb">
+                                    <img src="{{ post.image.url }}" alt="{{ post.title }}"
+                                        style="width: 100%; max-height: 500px; object-fit: cover;">
+                                </div>
+                                {% endif %}
+                                <header class="blog_entry-header clearfix">
+                                    <div class="blog_entry-header-inner">
+                                        <h1 class="blog_entry-title">{{ post.title }}</h1>
+                                    </div>
+                                </header>
+                                <div class="entry-content">
+                                    <ul class="post-meta">
+                                        <li><i class="fa fa-user"></i> Posted by {{ post.author.username }} </li>
+                                        <li><i class="fa fa-clock-o"></i> {{ post.created_at|date:"F d, Y" }}</li>
+                                    </ul>
+                                    <div class="post-content">
+                                        {{ post.content|linebreaks }}
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                        <div class="comment-content wow bounceInUp animated animated">
+                            <!-- Comments section could go here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

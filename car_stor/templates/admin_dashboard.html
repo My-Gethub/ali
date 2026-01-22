@@ -1,0 +1,526 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-heading">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="page-title">
+                    <h2>Administration Panel</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-container col1-layout wow bounceInUp animated animated" style="visibility: visible;">
+    <div class="main">
+        <div class="col-main">
+            <div class="container">
+
+                <!-- Statistics Section -->
+                <div class="row" style="margin-bottom: 30px;">
+                    <div class="col-md-3 col-sm-6">
+                        <div style="background: #f8f8f8; padding: 20px; border: 1px solid #ddd; text-align: center;">
+                            <h3 style="margin:0; font-size: 36px; color: #333;">{{ total_users }}</h3>
+                            <p style="margin:0; color: #777;">Total Users</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div style="background: #f8f8f8; padding: 20px; border: 1px solid #ddd; text-align: center;">
+                            <h3 style="margin:0; font-size: 36px; color: #333;">{{ total_cars }}</h3>
+                            <p style="margin:0; color: #777;">Total Cars</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div style="background: #f8f8f8; padding: 20px; border: 1px solid #ddd; text-align: center;">
+                            <h3 style="margin:0; font-size: 36px; color: #333;">{{ total_accessories }}</h3>
+                            <p style="margin:0; color: #777;">Accessories</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div style="background: #f8f8f8; padding: 20px; border: 1px solid #ddd; text-align: center;">
+                            <h3 style="margin:0; font-size: 36px; color: #333;">{{ total_orders }}</h3>
+                            <p style="margin:0; color: #777;">Total Orders</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <!-- Recent Users -->
+                        <div class="my-account">
+                            <div class="dashboard">
+                                <div class="box-account box-recent">
+                                    <div class="box-head"
+                                        style="display: flex; justify-content: space-between; align-items: center;">
+                                        <h2 style="margin: 0;">Recent Users</h2>
+                                        <a href="{% url 'admin_user_create' %}" class="button"
+                                            style="background: #333; color: #fff; padding: 5px 15px;">Add New User</a>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="data-table">
+                                            <thead>
+                                                <tr class="first last">
+                                                    <th>Username</th>
+                                                    <th>Email</th>
+                                                    <th>Date Joined</th>
+                                                    <th>Is Staff</th>
+                                                    <th class="last">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for user_obj in recent_users %}
+                                                <tr class="{% cycle 'odd' 'even' %}">
+                                                    <td>{{ user_obj.username }}</td>
+                                                    <td>{{ user_obj.email }}</td>
+                                                    <td>{{ user_obj.date_joined|date:"M d, Y" }}</td>
+                                                    <td>
+                                                        {% if user_obj.is_staff %}
+                                                        <span class="label label-success"
+                                                            style="background:#5cb85c; padding: 3px 6px; color: #fff; border-radius: 4px;">Staff</span>
+                                                        {% else %}
+                                                        <span class="label label-default"
+                                                            style="background:#777; padding: 3px 6px; color: #fff; border-radius: 4px;">User</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td class="last"
+                                                        style="white-space: nowrap; display: flex; gap: 5px;">
+                                                        {% if not user_obj.is_superuser %}
+                                                        <a href="{% url 'toggle_staff_status' user_obj.id %}"
+                                                            class="button"
+                                                            style="padding: 2px 8px; background: #f0ad4e; color: white;"
+                                                            title="Toggle Staff Rights"><i class="fa fa-key"></i></a>
+                                                        <a href="{% url 'admin_user_edit' user_obj.id %}" class="button"
+                                                            style="padding: 2px 8px; background: #6c6; color: white;"
+                                                            title="Edit User Data"><i class="fa fa-pencil"></i></a>
+                                                        <a href="{% url 'user_delete' user_obj.id %}" class="button"
+                                                            style="padding: 2px 8px; background: #ed6663; color: white;"
+                                                            title="Delete User"><i class="fa fa-trash"></i></a>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Manage Categories -->
+                        <div class="my-account" style="margin-top: 30px;">
+                            <div class="dashboard">
+                                <div class="box-account box-recent">
+                                    <div class="box-head"
+                                        style="display: flex; justify-content: space-between; align-items: center;">
+                                        <h2 style="margin: 0;">Manage Categories</h2>
+                                        <a href="{% url 'category_create' %}" class="button"
+                                            style="background: #333; color: #fff; padding: 5px 15px;">Add New
+                                            Category</a>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="data-table">
+                                            <thead>
+                                                <tr class="first last">
+                                                    <th>Name</th>
+                                                    <th class="last">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for category in all_categories %}
+                                                <tr class="{% cycle 'odd' 'even' %}">
+                                                    <td>{{ category.name }}</td>
+                                                    <td class="last"
+                                                        style="white-space: nowrap; display: flex; gap: 5px;">
+                                                        <a href="{% url 'category_update' category.id %}" class="button"
+                                                            style="padding: 2px 8px; background: #6c6; color: white;"
+                                                            title="Edit"><i class="fa fa-pencil"></i></a>
+                                                        <a href="{% url 'category_delete' category.id %}" class="button"
+                                                            style="padding: 2px 8px; background: #ed6663; color: white;"
+                                                            title="Delete"><i class="fa fa-trash"></i></a>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Manage Blog Posts -->
+                        <div class="my-account" style="margin-top: 30px;">
+                            <div class="dashboard">
+                                <div class="box-account box-recent">
+                                    <div class="box-head"
+                                        style="display: flex; justify-content: space-between; align-items: center;">
+                                        <h2 style="margin: 0;">Manage Blog Posts</h2>
+                                        <a href="{% url 'blog_create' %}" class="button"
+                                            style="background: #333; color: #fff; padding: 5px 15px;">Add New Post</a>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="data-table">
+                                            <thead>
+                                                <tr class="first last">
+                                                    <th>Image</th>
+                                                    <th>Title</th>
+                                                    <th>Date</th>
+                                                    <th class="last">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for post in all_posts %}
+                                                <tr class="{% cycle 'odd' 'even' %}">
+                                                    <td>
+                                                        {% if post.image %}
+                                                        <img src="{{ post.image.url }}" width="50"
+                                                            alt="{{ post.title }}">
+                                                        {% else %}
+                                                        N/A
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{% url 'blog_detail' post.id %}">
+                                                            {{ post.title }}
+                                                        </a>
+                                                    </td>
+                                                    <td>{{ post.created_at|date:"M d, Y" }}</td>
+                                                    <td class="last"
+                                                        style="white-space: nowrap; display: flex; gap: 5px;">
+                                                        <a href="{% url 'blog_update' post.id %}" class="button"
+                                                            style="padding: 2px 8px; background: #6c6; color: white;"
+                                                            title="Edit"><i class="fa fa-pencil"></i></a>
+                                                        <a href="{% url 'blog_delete' post.id %}" class="button"
+                                                            style="padding: 2px 8px; background: #ed6663; color: white;"
+                                                            title="Delete"><i class="fa fa-trash"></i></a>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Manage Car Orders -->
+                        <div class="my-account" style="margin-top: 30px;">
+                            <div class="dashboard">
+                                <div class="box-account box-recent">
+                                    <div class="box-head">
+                                        <h2>Manage Car Orders</h2>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="data-table">
+                                            <thead>
+                                                <tr class="first last">
+                                                    <th>Order ID</th>
+                                                    <th>User</th>
+                                                    <th>Car</th>
+                                                    <th>Price</th>
+                                                    <th>Status</th>
+                                                    <th>Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for order in all_car_orders %}
+                                                <tr class="{% cycle 'odd' 'even' %}">
+                                                    <td>#{{ order.id }}</td>
+                                                    <td>{{ order.user.username }}</td>
+                                                    <td>{{ order.car.title }}</td>
+                                                    <td>${{ order.total_price }}</td>
+                                                    <td>
+                                                        <span
+                                                            class="label {% if order.status == 'Approved' %}label-success{% elif order.status == 'Declined' %}label-danger{% else %}label-warning{% endif %}">
+                                                            {{ order.status }}
+                                                        </span>
+                                                    </td>
+                                                    <td>{{ order.created_at|date:"M d, Y" }}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Manage Accessory Orders -->
+                        <div class="my-account" style="margin-top: 30px;">
+                            <div class="dashboard">
+                                <div class="box-account box-recent">
+                                    <div class="box-head">
+                                        <h2>Manage Accessory Orders</h2>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="data-table">
+                                            <thead>
+                                                <tr class="first last">
+                                                    <th>Order ID</th>
+                                                    <th>User</th>
+                                                    <th>Total</th>
+                                                    <th>Status</th>
+                                                    <th>Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for order in all_accessory_orders %}
+                                                <tr class="{% cycle 'odd' 'even' %}">
+                                                    <td>#{{ order.id }}</td>
+                                                    <td>{{ order.user.username }}</td>
+                                                    <td>${{ order.total_price }}</td>
+                                                    <td>
+                                                        <span
+                                                            class="label {% if order.status == 'Approved' %}label-success{% elif order.status == 'Declined' %}label-danger{% else %}label-warning{% endif %}">
+                                                            {{ order.status }}
+                                                        </span>
+                                                    </td>
+                                                    <td>{{ order.created_at|date:"M d, Y" }}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Manage Cars -->
+                        <div class="my-account" style="margin-top: 30px;">
+                            <div class="dashboard">
+                                <div class="box-account box-recent">
+                                    <div class="box-head"
+                                        style="display: flex; justify-content: space-between; align-items: center;">
+                                        <h2 style="margin: 0;">Manage Cars (Recent 10)</h2>
+                                        <a href="{% url 'car_create' %}" class="button"
+                                            style="background: #333; color: #fff; padding: 5px 15px;">Add New Car (As
+                                            Admin)</a>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="data-table">
+                                            <thead>
+                                                <tr class="first last">
+                                                    <th>Image</th>
+                                                    <th>Title</th>
+                                                    <th>Owner</th>
+                                                    <th>Price</th>
+                                                    <th>Status</th>
+                                                    <th class="last">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for car in recent_cars %}
+                                                <tr class="{% cycle 'odd' 'even' %}">
+                                                    <td>
+                                                        {% if car.image %}
+                                                        <img src="{{ car.image.url }}" width="50" alt="{{ car.title }}">
+                                                        {% else %}
+                                                        N/A
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{% url 'car_detail' car.id %}">
+                                                            {{ car.title }}
+                                                        </a>
+                                                    </td>
+                                                    <td>{{ car.seller.username }}</td>
+                                                    <td>${{ car.price }}</td>
+                                                    <td>{{ car.status }}</td>
+                                                    <td class="last"
+                                                        style="white-space: nowrap; display: flex; gap: 5px;">
+                                                        <a href="{% url 'car_update' car.id %}" class="button"
+                                                            style="padding: 2px 8px; background: #6c6; color: white;"
+                                                            title="Edit"><i class="fa fa-pencil"></i></a>
+                                                        <a href="{% url 'car_delete' car.id %}" class="button"
+                                                            style="padding: 2px 8px; background: #ed6663; color: white;"
+                                                            title="Delete"><i class="fa fa-trash"></i></a>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Manage Accessories -->
+                        <div class="my-account" style="margin-top: 30px;">
+                            <div class="dashboard">
+                                <div class="box-account box-recent">
+                                    <div class="box-head"
+                                        style="display: flex; justify-content: space-between; align-items: center;">
+                                        <h2 style="margin: 0;">Manage Accessories (Recent 10)</h2>
+                                        <a href="{% url 'accessory_create' %}" class="button"
+                                            style="background: #333; color: #fff; padding: 5px 15px;">Add New
+                                            Accessory</a>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="data-table">
+                                            <thead>
+                                                <tr class="first last">
+                                                    <th>Image</th>
+                                                    <th>Title</th>
+                                                    <th>Owner</th>
+                                                    <th>Price</th>
+                                                    <th class="last">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for acc in recent_accessories %}
+                                                <tr class="{% cycle 'odd' 'even' %}">
+                                                    <td>
+                                                        {% if acc.image %}
+                                                        <img src="{{ acc.image.url }}" width="50" alt="{{ acc.title }}">
+                                                        {% else %}
+                                                        N/A
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{% url 'accessory_detail' acc.id %}">
+                                                            {{ acc.title }}
+                                                        </a>
+                                                    </td>
+                                                    <td>{{ acc.seller.username }}</td>
+                                                    <td>${{ acc.price }}</td>
+                                                    <td class="last"
+                                                        style="white-space: nowrap; display: flex; gap: 5px;">
+                                                        <a href="{% url 'accessory_update' acc.id %}" class="button"
+                                                            style="padding: 2px 8px; background: #6c6; color: white;"
+                                                            title="Edit"><i class="fa fa-pencil"></i></a>
+                                                        <a href="{% url 'accessory_delete' acc.id %}" class="button"
+                                                            style="padding: 2px 8px; background: #ed6663; color: white;"
+                                                            title="Delete"><i class="fa fa-trash"></i></a>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Inquiries -->
+                        <div class="my-account" style="margin-top: 30px;">
+                            <div class="dashboard">
+                                <div class="box-account box-recent">
+                                    <div class="box-head">
+                                        <h2>Car Inquiries</h2>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="data-table">
+                                            <thead>
+                                                <tr class="first last">
+                                                    <th>Car</th>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Message</th>
+                                                    <th>Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for inquiry in all_inquiries %}
+                                                <tr class="{% cycle 'odd' 'even' %}">
+                                                    <td>
+                                                        <a href="{% url 'car_detail' inquiry.car.id %}">
+                                                            {{ inquiry.car.title }}
+                                                        </a>
+                                                    </td>
+                                                    <td>{{ inquiry.name }}</td>
+                                                    <td>{{ inquiry.email }}</td>
+                                                    <td>{{ inquiry.message|truncatechars:50 }}</td>
+                                                    <td>{{ inquiry.created_at|date:"M d, Y" }}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Reviews -->
+                        <div class="my-account" style="margin-top: 30px;">
+                            <div class="dashboard">
+                                <div class="box-account box-recent">
+                                    <div class="box-head">
+                                        <h2>All Car Reviews</h2>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="data-table">
+                                            <thead>
+                                                <tr class="first last">
+                                                    <th>Car</th>
+                                                    <th>User</th>
+                                                    <th>Rating</th>
+                                                    <th>Comment</th>
+                                                    <th>Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for review in all_reviews %}
+                                                <tr class="{% cycle 'odd' 'even' %}">
+                                                    <td>
+                                                        <a href="{% url 'car_detail' review.car.id %}">
+                                                            {{ review.car.title }}
+                                                        </a>
+                                                    </td>
+                                                    <td>{{ review.user.username }}</td>
+                                                    <td>{{ review.rating }}/5</td>
+                                                    <td>{{ review.comment|truncatechars:100 }}</td>
+                                                    <td>{{ review.created_at|date:"M d, Y" }}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Messages -->
+                        <div class="my-account" style="margin-top: 30px;">
+                            <div class="dashboard">
+                                <div class="box-account box-recent">
+                                    <div class="box-head">
+                                        <h2>Website Messages</h2>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="data-table">
+                                            <thead>
+                                                <tr class="first last">
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Subject</th>
+                                                    <th>Message</th>
+                                                    <th>Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for msg in all_messages %}
+                                                <tr class="{% cycle 'odd' 'even' %}">
+                                                    <td>{{ msg.name }}</td>
+                                                    <td>{{ msg.email }}</td>
+                                                    <td>{{ msg.subject }}</td>
+                                                    <td>{{ msg.message|truncatechars:100 }}</td>
+                                                    <td>{{ msg.created_at|date:"M d, Y" }}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

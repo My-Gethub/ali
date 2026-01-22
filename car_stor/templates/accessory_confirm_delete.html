@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Delete Accessory{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+    <div class="page-title">
+        <h2>Delete Accessory</h2>
+    </div>
+</div>
+
+<div class="main-container col1-layout wow bounceInUp animated">
+    <div class="main">
+        <div class="col-main">
+            <div class="product-view wow bounceInUp animated">
+                <div class="product-essential container">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <div class="alert alert-warning">
+                                <h3>Are you sure you want to delete "{{ accessory.title }}"?</h3>
+                                <p>This action cannot be undone.</p>
+                            </div>
+
+                            <form method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="button btn-danger"><span>Confirm Delete</span></button>
+                                <a href="{% url 'accessory_detail' accessory.id %}"
+                                    class="button"><span>Cancel</span></a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
