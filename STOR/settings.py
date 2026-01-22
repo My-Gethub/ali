@@ -30,7 +30,7 @@ SECRET_KEY = env.str("SECRET_KEY", default='django-insecure-av7q+z%6ofwl&op%y^8m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=['alaay.pythonanywhere.com', 'localhost', '127.0.0.1'])
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=['alaay.pythonanywhere.com', 'localhost', '127.0.0.1', '.railway.app'])
 
 RAILWAY_PUBLIC_DOMAIN = env.str('RAILWAY_PUBLIC_DOMAIN', default=None)
 
@@ -41,6 +41,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://alaay.pythonanywhere.com',
     'http://localhost:8000',
     'http://127.0.0.1:8000',
+    'https://*.railway.app',
 ]
 
 if RAILWAY_PUBLIC_DOMAIN:
