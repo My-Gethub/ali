@@ -32,32 +32,19 @@ DEBUG = env.bool("DEBUG", default=False)
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=['alaay.pythonanywhere.com', 'localhost', '127.0.0.1'])
 
-RENDER_EXTERNAL_HOSTNAME = env.str('RENDER_EXTERNAL_HOSTNAME', default=None)
-REPLIT_SLUG = env.str('REPL_SLUG', default=None)
-REPLIT_OWNER = env.str('REPL_OWNER', default=None)
+RAILWAY_PUBLIC_DOMAIN = env.str('RAILWAY_PUBLIC_DOMAIN', default=None)
 
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
-    ALLOWED_HOSTS.append(f"{RENDER_EXTERNAL_HOSTNAME}.onrender.com")
-
-if REPLIT_SLUG and REPLIT_OWNER:
-    ALLOWED_HOSTS.append(f"{REPLIT_SLUG}.{REPLIT_OWNER}.repl.co")
-    ALLOWED_HOSTS.append(f"{REPLIT_SLUG}.{REPLIT_OWNER}.replit.dev")
-    ALLOWED_HOSTS.append("*.repl.co")
-    ALLOWED_HOSTS.append("*.replit.dev")
+if RAILWAY_PUBLIC_DOMAIN:
+    ALLOWED_HOSTS.append(RAILWAY_PUBLIC_DOMAIN)
 
 CSRF_TRUSTED_ORIGINS = [
     'https://alaay.pythonanywhere.com',
     'http://localhost:8000',
     'http://127.0.0.1:8000',
 ]
-if RENDER_EXTERNAL_HOSTNAME:
-    CSRF_TRUSTED_ORIGINS.append(f'https://{RENDER_EXTERNAL_HOSTNAME}')
-    CSRF_TRUSTED_ORIGINS.append(f'https://{RENDER_EXTERNAL_HOSTNAME}.onrender.com')
 
-if REPLIT_SLUG and REPLIT_OWNER:
-    CSRF_TRUSTED_ORIGINS.append(f"https://{REPLIT_SLUG}.{REPLIT_OWNER}.repl.co")
-    CSRF_TRUSTED_ORIGINS.append(f"https://{REPLIT_SLUG}.{REPLIT_OWNER}.replit.dev")
+if RAILWAY_PUBLIC_DOMAIN:
+    CSRF_TRUSTED_ORIGINS.append(f'https://{RAILWAY_PUBLIC_DOMAIN}')
 
 # الإعدادات الأمنية للإنتاج
 SECURE_BROWSER_XSS_FILTER = True
