@@ -2,6 +2,7 @@ services:
   - type: web
     name: car-trade-stor
     env: python
+    plan: free
     buildCommand: "./render-build.sh"
     startCommand: "gunicorn STOR.wsgi:application"
     envVars:
@@ -18,5 +19,6 @@ services:
 
 databases:
   - name: car-trade-db
+    plan: free
     databaseName: car_trade_db
     user: car_trade_user
